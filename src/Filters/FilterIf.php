@@ -9,12 +9,12 @@ class FilterIf implements Filter
     /**
      *  Checks if filters should run if there is value passed that matches.
      *
-     *  @param  array   $values
-     *  @param  array   $options
-     *  @return boolean
+     * @param mixed $value
+     * @param array $options
+     * @return mixed
      */
-    public function apply($values, array $options = [])
+    public function apply($value, array $options = [])
     {
-        return array_key_exists($options[0], $values) && $values[$options[0]] === $options[1];
+        return array_key_exists($options[0], $value) && $value[$options[0]] === $options[1];
     }
 }

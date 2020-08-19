@@ -9,9 +9,9 @@ class Digit implements Filter
     /**
      *  Get only digit characters from the string.
      *
-     * @param string $value
+     * @param mixed $value
      * @param array $options
-     * @return string
+     * @return mixed
      */
     public function apply($value, array $options = [])
     {

@@ -9,9 +9,9 @@ class StripTags implements Filter
     /**
      *  Strip tags from the given string.
      *
-     * @param string $value
+     * @param mixed $value
      * @param array $options
-     * @return string
+     * @return mixed
      */
     public function apply($value, array $options = [])
     {

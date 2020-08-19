@@ -4,6 +4,7 @@ namespace Aporat\FilterVar\Filters;
 
 use Aporat\FilterVar\Contracts\Filter;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class Cast implements Filter
 {
@@ -12,7 +13,7 @@ class Cast implements Filter
      *
      * @param string $value
      * @param array $options
-     * @return string
+     * @return mixed
      */
     public function apply($value, array $options = [])
     {
@@ -38,7 +39,7 @@ class Cast implements Filter
                 $array = is_array($value) ? $value : json_decode($value, true);
                 return new Collection($array);
             default:
-                throw new \InvalidArgumentException("Wrong FilterVar casting format: {$type}.");
+                throw new InvalidArgumentException("Wrong FilterVar casting format: {$type}.");
         }
     }
 }
