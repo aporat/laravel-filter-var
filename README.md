@@ -1,9 +1,11 @@
 # Laravel Filter Var
 
 [![Software License][ico-license]](LICENSE)
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-build]](https://github.com/aporat/laravel-filter-var/actions)
+[![Latest Stable Version](https://poser.pugx.org/aporat/laravel-filter-var/version.png)](https://packagist.org/packages/aporat/laravel-filter-var)
+[![Composer Downloads](https://poser.pugx.org/aporat/laravel-filter-var/d/total.png)](https://packagist.org/packages/aporat/laravel-filter-var)
+[![Build Status](https://github.com/aporat/laravel-filter-var/workflows/Tests/badge.svg)](https://github.com/aporat/laravel-filter-var/actions)
+[![Code Coverage](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/?branch=master)
 
 Laravel package for filtering and sanitizing request variables
 
