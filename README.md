@@ -3,6 +3,7 @@
 [![Software License][ico-license]](LICENSE)
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Total Downloads][ico-downloads]][link-downloads]
+[![Build Status][ico-build]](https://github.com/aporat/laravel-filter-var/actions)
 
 Laravel package for filtering and sanitizing request variables
 
@@ -88,7 +89,7 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/aporat/laravel-filter-var.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/aporat/laravel-filter-var/master.svg?style=flat-square
+[ico-build]: https://img.shields.io/travis/aporat/laravel-filter-var/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/aporat/laravel-filter-var.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/aporat/laravel-filter-var.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/aporat/laravel-filter-var.svg?style=flat-square
