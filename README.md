@@ -1,6 +1,5 @@
 # Laravel Filter Var
 
-[![Software License][ico-license]](LICENSE)
 [![Latest Stable Version](https://poser.pugx.org/aporat/laravel-filter-var/version.png)](https://packagist.org/packages/aporat/laravel-filter-var)
 [![Composer Downloads](https://poser.pugx.org/aporat/laravel-filter-var/d/total.png)](https://packagist.org/packages/aporat/laravel-filter-var)
 [![Build Status](https://github.com/aporat/laravel-filter-var/workflows/Tests/badge.svg)](https://github.com/aporat/laravel-filter-var/actions)
