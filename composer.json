@@ -24,9 +24,9 @@
     ],
     "require": {
         "php": "^7.4",
-        "illuminate/support": "~7.0|~8.0",
-        "illuminate/validation": "~7.0|~8.0",
-        "nesbot/carbon": "~1.0|~2.0",
+        "illuminate/support": "~7|~8",
+        "illuminate/validation": "~7|~8",
+        "nesbot/carbon": "~1|~2",
         "ext-json": "*"
     },
     "require-dev": {
