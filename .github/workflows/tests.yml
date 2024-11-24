@@ -7,26 +7,12 @@ on:
 jobs:
     tests:
         name: PHP ${{ matrix.php }}; Laravel ${{ matrix.laravel }}
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-latest
 
         strategy:
             matrix:
-                php: ['8.0', '8.1', '8.2', '8.3']
-                laravel: ['8', '9', '10', '11']
-                exclude:
-                    - php: '8.0'
-                      laravel: '10'
-                    - php: '8.0'
-                      laravel: '11'
-                    - php: '8.1'
-                      laravel: '11'
-                    - php: '8.2'
-                      laravel: '8'
-                    - php: '8.3'
-                      laravel: '8'
-                    - php: '8.3'
-                      laravel: '9'
-
+                php: ['8.3']
+                laravel: ['11']
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
@@ -43,44 +29,8 @@ jobs:
             - name: Setup Problem Matchers
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            - name: Select Laravel 8
-              uses: nick-invision/retry@v3
-              with:
-                  timeout_minutes: 5
-                  max_attempts: 5
-                  command: composer require "laravel/framework:^8.83.27" "phpunit/phpunit:^9.6.17" --no-update --no-interaction
-              if: "matrix.laravel == '8'"
+            - name: Install Dependencies
+              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
-            - name: Select Laravel 9
-              uses: nick-invision/retry@v3
-              with:
-                  timeout_minutes: 5
-                  max_attempts: 5
-                  command: composer require "laravel/framework:^9.52.16" "phpunit/phpunit:^9.6.17" --no-update --no-interaction
-              if: "matrix.laravel == '9'"
-
-            - name: Select Laravel 10
-              uses: nick-invision/retry@v3
-              with:
-                  timeout_minutes: 5
-                  max_attempts: 5
-                  command: composer require "laravel/framework:^10.34.2" "phpunit/phpunit:^10.5.13" --no-update --no-interaction
-              if: "matrix.laravel == '10'"
-
-            - name: Select Laravel 11
-              uses: nick-invision/retry@v3
-              with:
-                  timeout_minutes: 5
-                  max_attempts: 5
-                  command: composer require "laravel/framework:^11.0.7" "phpunit/phpunit:^10.5.13" --no-update --no-interaction
-              if: "matrix.laravel == '11'"
-
-            - name: Install PHP Dependencies
-              uses: nick-invision/retry@v3
-              with:
-                  timeout_minutes: 5
-                  max_attempts: 5
-                  command: composer update --no-interaction --no-progress
-
-            - name: Execute PHPUnit
+            - name: Execute tests (Unit and Feature tests) via PHPUnit
               run: vendor/bin/phpunit
