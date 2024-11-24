@@ -15,7 +15,7 @@ class MediaRealId implements Filter
      * @param array $options
      * @return string
      */
-    public function apply($value, array $options = [])
+    public function apply($value, array $options = []): string
     {
 
         if (strpos($value, '_')) {
@@ -31,7 +31,7 @@ class CustomFilterTest extends TestCase
     public function testFilter(): void
     {
 
-        $config = require __DIR__.'/../src/Config/filter_var.php';
+        $config = require __DIR__ . '/../src/config/filter_var.php';
 
         $config['custom_filters'] = [
             'MediaRealId' => MediaRealId::class

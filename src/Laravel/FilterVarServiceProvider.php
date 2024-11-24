@@ -4,20 +4,48 @@ namespace Aporat\FilterVar\Laravel;
 
 use Aporat\FilterVar\FilterVar;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Foundation\Application as LaravelApplication;
+use Laravel\Lumen\Application as LumenApplication;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->setupConfig();
+    }
+
+    /**
+     * Setup the config.
+     *
+     * @return void
+     */
+    private function setupConfig(): void
+    {
+        $source = realpath($raw = __DIR__.'/../config/filter_var.php') ?: $raw;
+
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+            $this->publishes([$source => config_path('filter_var.php')]);
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('filter_var');
+        }
+
+        $this->mergeConfigFrom($source, 'filter_var');
+    }
 
     /**
      * Register the service provider.
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->registerResources();
         $this->registerFilterService();
     }
 
@@ -35,44 +63,14 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
     }
 
     /**
-     * Register resources.
-     *
-     * @return void
-     */
-    public function registerResources()
-    {
-        if ($this->isLumen()) {
-            $this->app->configure('filter_var');
-        } elseif ($this->app->runningInConsole()) {
-            $this->publishes(
-                [__DIR__.'/../Config/filter_var.php' => config_path('filter_var.php')],
-                'filter_var'
-            );
-        }
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/../Config/filter_var.php',
-            'filter_var'
-        );
-    }
-
-    /**
      * Get the services provided by the provider.
      *
-     * @return string
+     * @return string[]
      */
-    public function provides()
+    public function provides(): array
     {
-        return 'filter';
-    }
-
-    /**
-     * Check if package is running under Lumen app
-     *
-     * @return bool
-     */
-    protected function isLumen()
-    {
-        return Str::contains($this->app->version(), 'Lumen') === true;
+        return [
+            'filter',
+        ];
     }
 }

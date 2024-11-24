@@ -4,8 +4,8 @@
     "type": "library",
     "authors": [
         {
-            "name": "Adar Porat",
-            "email": "adar.porat@gmail.com",
+            "name": "aporat28",
+            "email": "aporat28@gmail.com",
             "homepage": "https://github.com/aporat"
         }
     ],
@@ -19,9 +19,7 @@
         "laravel filter var"
     ],
     "homepage": "https://github.com/aporat/laravel-filter-var",
-    "license": [
-        "MIT"
-    ],
+    "license": "MIT",
     "require": {
         "php": "^8.2.0",
         "illuminate/support": "^10|^11",
@@ -34,8 +32,9 @@
     },
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true,
-        "optimize-autoloader": true
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "autoload": {
         "psr-4": {
