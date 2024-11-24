@@ -54,10 +54,7 @@
         "laravel": {
             "providers": [
                 "Aporat\\FilterVar\\Laravel\\FilterVarServiceProvider"
-            ],
-            "aliases": {
-                "Sms": "Aporat\\FilterVar\\Laravel\\Facade\\FilterVar"
-            }
+            ]
         }
     }
 }
