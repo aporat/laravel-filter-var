@@ -5,12 +5,11 @@ namespace Aporat\FilterVar\Laravel;
 use Aporat\FilterVar\FilterVar;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Foundation\Application as LaravelApplication;
-use Laravel\Lumen\Application as LumenApplication;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Lumen\Application as LumenApplication;
 
 class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-
     /**
      * Boot the service provider.
      *
@@ -58,6 +57,7 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
     {
         $this->app->singleton('filter', function ($app) {
             $config = $app->make('config')->get('filter_var');
+
             return new FilterVar($config);
         });
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Aporat\FilterVar;
 
 use Aporat\FilterVar\Contracts\Filter;
@@ -8,23 +9,24 @@ use InvalidArgumentException;
 
 class FilterVar
 {
-
     /**
-     *  Filters to apply
-     *  @var array
+     *  Filters to apply.
+     *
+     * @var array
      */
     protected $rules;
 
     /**
-     *  Available filters as $name => $classPath
-     *  @var array
+     *  Available filters as $name => $classPath.
+     *
+     * @var array
      */
     protected $filters = [];
 
     /**
      *  Create a new filter instance.
      *
-     *  @param  array   $config
+     * @param array $config
      */
     public function __construct(array $config = [])
     {
@@ -35,13 +37,13 @@ class FilterVar
                 'Capitalize'  => Filters\Capitalize::class,
                 'Cast'        => Filters\Cast::class,
                 'Escape'      => Filters\EscapeHTML::class,
-                'FormatDate' => Filters\FormatDate::class,
+                'FormatDate'  => Filters\FormatDate::class,
                 'Lowercase'   => Filters\Lowercase::class,
                 'Uppercase'   => Filters\Uppercase::class,
                 'Trim'        => Filters\Trim::class,
-                'StripTags'  => Filters\StripTags::class,
+                'StripTags'   => Filters\StripTags::class,
                 'Digit'       => Filters\Digit::class,
-                'FilterIf'   => Filters\FilterIf::class,
+                'FilterIf'    => Filters\FilterIf::class,
             ];
         }
 
@@ -53,15 +55,16 @@ class FilterVar
     }
 
     /**
-     *  Apply the given filter by its name
+     *  Apply the given filter by its name.
      *
      * @param array $rule
-     * @param $value
+     * @param       $value
+     *
      * @return Filter
      */
     protected function applyFilter(array $rule, $value)
     {
-        $name    = $rule[0];
+        $name = $rule[0];
         $options = $rule[1];
 
         // If the filter does not exist, throw an Exception:
@@ -71,17 +74,17 @@ class FilterVar
 
         $filter = $this->filters[$name];
 
-        return (new $filter)->apply($value, $options);
+        return (new $filter())->apply($value, $options);
     }
 
     /**
      * @param string $rule_string
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return mixed
      */
     public function filterValue(string $rule_string, $value)
     {
-
         $rules = [];
         $rules_strings = explode('|', $rule_string);
         foreach ($rules_strings as $rule_string) {

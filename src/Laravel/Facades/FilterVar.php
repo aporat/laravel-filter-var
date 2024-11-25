@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \Aporat\FilterVar\FilterVar
  */
-
 class FilterVar extends Facade
 {
     /**
