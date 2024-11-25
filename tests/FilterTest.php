@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class FilterTest extends TestCase
 {
-
-
     public function testCapitalizeFilter(): void
     {
         $value = 'ValUe INPUT';
@@ -68,5 +66,4 @@ class FilterTest extends TestCase
 
         $this->assertEquals('VALUE INPUT', $result);
     }
-
 }
