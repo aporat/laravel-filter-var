@@ -48,9 +48,6 @@ jobs:
               env:
                   update: true
 
-            - name: Setup Problem Matchers
-              run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
             - name: Cache dependencies
               uses: actions/cache@v3
               with:
@@ -62,6 +59,11 @@ jobs:
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
             - name: Execute tests (Unit and Feature tests) via PHPUnit
+              if: matrix.coverage == 'none'
+              run: composer test
+
+            - name: Execute tests (Unit and Feature tests) via PHPUnit
+              if: matrix.coverage == 'xdebug'
               run: composer test:ci
 
             - name: Upload coverage reports to Codecov
