@@ -11,10 +11,11 @@ class Capitalize implements Filter
      *
      * @param mixed $value
      * @param array $options
+     *
      * @return mixed
      */
     public function apply($value, array $options = [])
     {
-        return is_string($value) ? mb_convert_case(mb_strtolower($value, 'UTF-8'),  MB_CASE_TITLE) : $value;
+        return is_string($value) ? mb_convert_case(mb_strtolower($value, 'UTF-8'), MB_CASE_TITLE) : $value;
     }
 }

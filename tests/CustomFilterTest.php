@@ -8,18 +8,16 @@ use PHPUnit\Framework\TestCase;
 
 class MediaRealId implements Filter
 {
-
     /**
-     *
      * @param mixed $value
      * @param array $options
+     *
      * @return string
      */
     public function apply($value, array $options = []): string
     {
-
         if (strpos($value, '_')) {
-            list ($value, ) = explode('_', $value);
+            list($value) = explode('_', $value);
         }
 
         return $value;
@@ -30,11 +28,10 @@ class CustomFilterTest extends TestCase
 {
     public function testFilter(): void
     {
-
-        $config = require __DIR__ . '/../src/config/filter_var.php';
+        $config = require __DIR__.'/../src/config/filter_var.php';
 
         $config['custom_filters'] = [
-            'MediaRealId' => MediaRealId::class
+            'MediaRealId' => MediaRealId::class,
         ];
 
         $value = '11111_22222';

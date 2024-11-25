@@ -12,7 +12,8 @@ class Cast implements Filter
      *  Capitalize the given string.
      *
      * @param string $value
-     * @param array $options
+     * @param array  $options
+     *
      * @return mixed
      */
     public function apply($value, array $options = [])
@@ -37,6 +38,7 @@ class Cast implements Filter
                 return json_decode($value, true);
             case 'collection':
                 $array = is_array($value) ? $value : json_decode($value, true);
+
                 return new Collection($array);
             default:
                 throw new InvalidArgumentException("Wrong FilterVar casting format: {$type}.");

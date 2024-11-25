@@ -11,6 +11,7 @@ class Lowercase implements Filter
      *
      * @param mixed $value
      * @param array $options
+     *
      * @return mixed
      */
     public function apply($value, array $options = [])
