@@ -21,7 +21,7 @@
     "homepage": "https://github.com/aporat/laravel-filter-var",
     "license": "MIT",
     "require": {
-        "php": "^8.0.0",
+        "php": "^8.2",
         "illuminate/support": "^10|^11",
         "illuminate/validation": "^10|^11",
         "nesbot/carbon": "^2.0|^3.0",
