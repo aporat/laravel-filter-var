@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class FilterTest extends TestCase
 {
-    public function testFilter(): void
+    public function testTrimFilter(): void
     {
         $value = ' ValUe INPUT';
 
@@ -15,5 +15,25 @@ class FilterTest extends TestCase
         $result = $filter->filterValue('trim', $value);
 
         $this->assertEquals('ValUe INPUT', $result);
+    }
+
+    public function testCapitalizeFilter(): void
+    {
+        $value = 'ValUe INPUT';
+
+        $filter = new FilterVar();
+        $result = $filter->filterValue('capitalize', $value);
+
+        $this->assertEquals('Value Input', $result);
+    }
+
+    public function testCastFilter(): void
+    {
+        $value = '23';
+
+        $filter = new FilterVar();
+        $result = $filter->filterValue('cast:int', $value);
+
+        $this->assertIsInt($result);
     }
 }
