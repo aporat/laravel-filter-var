@@ -21,6 +21,8 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
+                  extensions: mbstring json openssl xdebug
+                  ini-values: memory_limit=-1
                   tools: composer:v2
                   coverage: none
               env:
@@ -33,7 +35,8 @@ jobs:
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
             - name: Execute tests (Unit and Feature tests) via PHPUnit
-              run: vendor/bin/phpunit
+              run: composer test:ci
+
             - name: Upload coverage reports to Codecov
               uses: codecov/codecov-action@v4
               with:
