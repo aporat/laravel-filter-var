@@ -3,7 +3,6 @@
 namespace Aporat\FilterVar;
 
 use Aporat\FilterVar\Contracts\Filter;
-use Aporat\FilterVar\Filters\Uppercase;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationRuleParser;
 use InvalidArgumentException;
@@ -41,7 +40,7 @@ class FilterVar
             'Trim'        => Filters\Trim::class,
             'StripTags'   => Filters\StripTags::class,
             'Digit'       => Filters\Digit::class,
-            'FilterIf'    => Filters\FilterIf::class
+            'FilterIf'    => Filters\FilterIf::class,
         ];
 
         if (Arr::has($config, 'custom_filters')) {
@@ -72,7 +71,6 @@ class FilterVar
         $filter_name = $this->filters[$name];
 
         return (new $filter_name())->apply($value, $options);
-
     }
 
     /**

@@ -15,7 +15,7 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function register(): void
     {
-        $configPath = __DIR__ . '/../../config/filter-var.php';
+        $configPath = __DIR__.'/../../config/filter-var.php';
         $this->mergeConfigFrom($configPath, 'filter-var');
     }
 
@@ -26,14 +26,14 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function boot(): void
     {
-        $configPath = __DIR__ . '/../../config/filter-var.php';
+        $configPath = __DIR__.'/../../config/filter-var.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
 
         $this->registerFilterService();
     }
 
     /**
-     * Get the config path
+     * Get the config path.
      *
      * @return string
      */
