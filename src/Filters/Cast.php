@@ -12,7 +12,7 @@ class Cast implements Filter
      *  Capitalize the given string.
      *
      * @param mixed $value
-     * @param array  $options
+     * @param array $options
      *
      * @return mixed
      */

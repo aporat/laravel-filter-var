@@ -28,7 +28,7 @@ class CustomFilterTest extends TestCase
 {
     public function testFilter(): void
     {
-        $config = require __DIR__ . '/../config/filter-var.php';
+        $config = require __DIR__.'/../config/filter-var.php';
 
         $config['custom_filters'] = [
             'MediaRealId' => MediaRealId::class,
