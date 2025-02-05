@@ -4,40 +4,10 @@ namespace Aporat\FilterVar\Laravel;
 
 use Aporat\FilterVar\FilterVar;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Lumen\Application as LumenApplication;
 
 class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Boot the service provider.
-     *
-     * @return void
-     */
-    public function boot(): void
-    {
-        $this->setupConfig();
-    }
-
-    /**
-     * Setup the config.
-     *
-     * @return void
-     */
-    private function setupConfig(): void
-    {
-        $source = realpath($raw = __DIR__.'/../config/filter_var.php') ?: $raw;
-
-        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
-            $this->publishes([$source => config_path('filter_var.php')]);
-        } elseif ($this->app instanceof LumenApplication) {
-            $this->app->configure('filter_var');
-        }
-
-        $this->mergeConfigFrom($source, 'filter_var');
-    }
-
     /**
      * Register the service provider.
      *
@@ -45,18 +15,42 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function register(): void
     {
+        $configPath = __DIR__ . '/../../config/filter-var.php';
+        $this->mergeConfigFrom($configPath, 'filter-var');
+    }
+
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $configPath = __DIR__ . '/../../config/filter-var.php';
+        $this->publishes([$configPath => $this->getConfigPath()], 'config');
+
         $this->registerFilterService();
     }
 
     /**
-     * Register currency provider.
+     * Get the config path
+     *
+     * @return string
+     */
+    protected function getConfigPath(): string
+    {
+        return config_path('filter-var.php');
+    }
+
+    /**
+     * Register the filter provider.
      *
      * @return void
      */
-    public function registerFilterService()
+    public function registerFilterService(): void
     {
-        $this->app->singleton('filter', function ($app) {
-            $config = $app->make('config')->get('filter_var');
+        $this->app->singleton('filter-var', function ($app) {
+            $config = $app->make('config')->get('filter-var');
 
             return new FilterVar($config);
         });
@@ -70,7 +64,7 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
     public function provides(): array
     {
         return [
-            'filter',
+            'filter-var',
         ];
     }
 }

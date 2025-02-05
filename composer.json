@@ -31,10 +31,7 @@
         "phpunit/phpunit": "^11.0"
     },
     "config": {
-        "preferred-install": "dist",
-        "allow-plugins": {
-            "php-http/discovery": true
-        }
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -59,5 +56,7 @@
     "scripts": {
         "test": "phpunit --colors=always",
         "test:ci": "phpunit --colors=always --coverage-text --coverage-clover=coverage.xml"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

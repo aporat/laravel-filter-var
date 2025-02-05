@@ -11,14 +11,14 @@ class Cast implements Filter
     /**
      *  Capitalize the given string.
      *
-     * @param string $value
+     * @param mixed $value
      * @param array  $options
      *
      * @return mixed
      */
-    public function apply($value, array $options = [])
+    public function apply(mixed $value, array $options = []): mixed
     {
-        $type = isset($options[0]) ? $options[0] : null;
+        $type = $options[0] ?? null;
         switch ($type) {
             case 'int':
             case 'integer':

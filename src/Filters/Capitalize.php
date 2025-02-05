@@ -14,7 +14,7 @@ class Capitalize implements Filter
      *
      * @return mixed
      */
-    public function apply($value, array $options = [])
+    public function apply(mixed $value, array $options = []): mixed
     {
         return is_string($value) ? mb_convert_case(mb_strtolower($value, 'UTF-8'), MB_CASE_TITLE) : $value;
     }

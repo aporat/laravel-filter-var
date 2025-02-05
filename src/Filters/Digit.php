@@ -12,9 +12,9 @@ class Digit implements Filter
      * @param mixed $value
      * @param array $options
      *
-     * @return mixed
+     * @return string|array|null
      */
-    public function apply($value, array $options = [])
+    public function apply(mixed $value, array $options = []): string|array|null
     {
         return preg_replace('/[^0-9]/si', '', $value);
     }

@@ -14,7 +14,7 @@ class FilterIf implements Filter
      *
      * @return mixed
      */
-    public function apply($value, array $options = [])
+    public function apply(mixed $value, array $options = []): mixed
     {
         return array_key_exists($options[0], $value) && $value[$options[0]] === $options[1];
     }

@@ -14,8 +14,8 @@ class EscapeHTML implements Filter
      *
      * @return mixed
      */
-    public function apply($value, array $options = [])
+    public function apply(mixed $value, array $options = []): mixed
     {
-        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
+        return is_string($value) ? htmlspecialchars($value) : $value;
     }
 }

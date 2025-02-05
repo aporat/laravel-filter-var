@@ -12,5 +12,5 @@ interface Filter
      *
      * @return mixed
      */
-    public function apply($value, array $options = []);
+    public function apply(mixed $value, array $options = []): mixed;
 }
