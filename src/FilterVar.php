@@ -71,7 +71,7 @@ class FilterVar
 
         $filter_name = $this->filters[$name];
 
-        return new $filter_name()->apply($value, $options);
+        return (new $filter_name())->apply($value, $options);
 
     }
 
