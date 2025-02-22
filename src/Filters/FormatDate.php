@@ -4,15 +4,26 @@ namespace Aporat\FilterVar\Filters;
 
 use Aporat\FilterVar\Contracts\Filter;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use InvalidArgumentException;
 
 class FormatDate implements Filter
 {
     /**
-     * @param mixed $value
-     * @param array $options
+     * Reformat a date string from one format to another using Carbon.
      *
-     * @return mixed
+     * This filter takes a date string ($value) in a specified current format ($options[0])
+     * and converts it to a target format ($options[1]). Both formats must be provided in
+     * the $options array. If the input is empty or invalid, it’s returned unchanged or
+     * an exception is thrown.
+     *
+     * Example: $value = "2023-01-15", $options = ["Y-m-d", "d/m/Y"] => "15/01/2023"
+     *
+     * @param mixed $value The date string to reformat
+     * @param array<int, string> $options Array with [0 => current format, 1 => target format]
+     * @return mixed The reformatted date string or original value if empty
+     * @throws InvalidArgumentException If $options doesn’t contain exactly two formats
+     * @throws InvalidFormatException If the date cannot be parsed
      */
     public function apply(mixed $value, array $options = []): mixed
     {

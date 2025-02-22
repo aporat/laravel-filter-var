@@ -9,62 +9,44 @@ use Illuminate\Support\ServiceProvider;
 class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Register the service provider.
+     * Path to the package's config file.
      *
-     * @return void
+     * @var string
+     */
+    protected string $configPath = __DIR__ . '/../../config/filter-var.php';
+
+    /**
+     * Register the service provider bindings in the container.
      */
     public function register(): void
     {
-        $configPath = __DIR__.'/../../config/filter-var.php';
-        $this->mergeConfigFrom($configPath, 'filter-var');
+        $this->mergeConfigFrom($this->configPath, 'filter-var');
     }
 
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
-        $configPath = __DIR__.'/../../config/filter-var.php';
-        $this->publishes([$configPath => $this->getConfigPath()], 'config');
-
+        $this->publishes([$this->configPath => config_path('filter-var.php')], 'config');
         $this->registerFilterService();
     }
 
     /**
-     * Get the config path.
-     *
-     * @return string
+     * Register the FilterVar singleton in the application container.
      */
-    protected function getConfigPath(): string
+    protected function registerFilterService(): void
     {
-        return config_path('filter-var.php');
+        $this->app->singleton('filter-var', fn ($app) => new FilterVar($app['config']['filter-var']));
     }
 
     /**
-     * Register the filter provider.
+     * Get the services provided by this provider.
      *
-     * @return void
-     */
-    public function registerFilterService(): void
-    {
-        $this->app->singleton('filter-var', function ($app) {
-            $config = $app->make('config')->get('filter-var');
-
-            return new FilterVar($config);
-        });
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return string[]
+     * @return array<int, string>
      */
     public function provides(): array
     {
-        return [
-            'filter-var',
-        ];
+        return ['filter-var'];
     }
 }

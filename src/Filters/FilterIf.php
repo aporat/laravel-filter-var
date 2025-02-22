@@ -7,12 +7,17 @@ use Aporat\FilterVar\Contracts\Filter;
 class FilterIf implements Filter
 {
     /**
-     *  Checks if filters should run if there is value passed that matches.
+     * Check if a condition is met based on the input array and options.
      *
-     * @param mixed $value
-     * @param array $options
+     * This filter verifies if the input value is an array and contains a key (specified by
+     * $options[0]) whose value matches the expected value (specified by $options[1]).
+     * Returns true if the condition is met, false otherwise. Non-array inputs always return false.
      *
-     * @return mixed
+     * Example: If $value = ['status' => 'active'], $options = ['status', 'active'], returns true.
+     *
+     * @param mixed $value The input value (expected to be an array)
+     * @param array<int, mixed> $options Array where $options[0] is the key and $options[1] is the expected value
+     * @return mixed Returns bool (true if condition matches, false otherwise)
      */
     public function apply(mixed $value, array $options = []): mixed
     {

@@ -9,12 +9,16 @@ use InvalidArgumentException;
 class Cast implements Filter
 {
     /**
-     *  Capitalize the given string.
+     * Cast the given value to a specified type.
      *
-     * @param mixed $value
-     * @param array $options
+     * The target type is determined by the first element in $options (e.g., $options[0]).
+     * Supported types: int, integer, float, real, double, string, bool, boolean, object,
+     * array, collection. If an unsupported type is provided, an exception is thrown.
      *
-     * @return mixed
+     * @param mixed $value The value to cast
+     * @param array $options Options array where the first element specifies the target type
+     * @return mixed The value cast to the specified type
+     * @throws InvalidArgumentException If the type is invalid or not provided
      */
     public function apply(mixed $value, array $options = []): mixed
     {
@@ -41,7 +45,7 @@ class Cast implements Filter
 
                 return new Collection($array);
             default:
-                throw new InvalidArgumentException("Wrong FilterVar casting format: {$type}.");
+                throw new InvalidArgumentException("Wrong FilterVar casting format: $type.");
         }
     }
 }

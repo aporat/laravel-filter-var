@@ -10,82 +10,80 @@ use InvalidArgumentException;
 class FilterVar
 {
     /**
-     *  Filters to apply.
+     * Available filters mapped as filter name => class path.
      *
-     * @var array
+     * @var array<string, class-string<Filter>>
      */
-    protected array $rules;
+    protected array $filters = [];
 
     /**
-     *  Available filters as $name => $classPath.
+     * Create a new FilterVar instance.
      *
-     * @var array
-     */
-    protected mixed $filters = [];
-
-    /**
-     *  Create a new filter instance.
-     *
-     * @param array $config
+     * @param array<string, mixed> $config Configuration array, optionally containing 'custom_filters'
      */
     public function __construct(array $config = [])
     {
-        $filters = [
-            'Capitalize'  => Filters\Capitalize::class,
-            'Cast'        => Filters\Cast::class,
-            'Escape'      => Filters\EscapeHTML::class,
-            'FormatDate'  => Filters\FormatDate::class,
-            'Lowercase'   => Filters\Lowercase::class,
-            'Uppercase'   => Filters\Uppercase::class,
-            'Trim'        => Filters\Trim::class,
-            'StripTags'   => Filters\StripTags::class,
-            'Digit'       => Filters\Digit::class,
-            'FilterIf'    => Filters\FilterIf::class,
-        ];
-
-        if (Arr::has($config, 'custom_filters')) {
-            $filters = array_merge($filters, Arr::get($config, 'custom_filters'));
-        }
-
-        $this->filters = $filters;
+        $this->filters = array_merge($this->getDefaultFilters(), Arr::get($config, 'custom_filters', []));
     }
 
     /**
-     *  Apply the given filter by its name.
+     * Get the default filter mappings.
      *
-     * @param array $rule
-     * @param mixed $value
+     * @return array<string, class-string<Filter>>
+     */
+    protected function getDefaultFilters(): array
+    {
+        return [
+            'Capitalize' => Filters\Capitalize::class,
+            'Cast' => Filters\Cast::class,
+            'Escape' => Filters\EscapeHTML::class,
+            'FormatDate' => Filters\FormatDate::class,
+            'Lowercase' => Filters\Lowercase::class,
+            'Uppercase' => Filters\Uppercase::class,
+            'Trim' => Filters\Trim::class,
+            'StripTags' => Filters\StripTags::class,
+            'Digit' => Filters\Digit::class,
+            'FilterIf' => Filters\FilterIf::class,
+        ];
+    }
+
+    /**
+     * Apply a single filter to a value.
      *
-     * @return mixed
+     * @param array{0: string, 1?: array<string, mixed>} $rule Filter name and optional options
+     * @param mixed $value The value to filter
+     * @return mixed The filtered value
+     *
+     * @throws InvalidArgumentException If the filter name is not registered
      */
     protected function applyFilter(array $rule, mixed $value): mixed
     {
         $name = $rule[0];
-        $options = $rule[1];
+        $options = $rule[1] ?? [];
 
-        // If the filter does not exist, throw an Exception:
         if (!isset($this->filters[$name])) {
-            throw new InvalidArgumentException("No filter found by the name of $name");
+            throw new InvalidArgumentException("No filter registered for the name '$name'.");
         }
 
-        $filter_name = $this->filters[$name];
+        /** @var Filter $filter */
+        $filter = new $this->filters[$name]();
 
-        return (new $filter_name())->apply($value, $options);
+        return $filter->apply($value, $options);
     }
 
     /**
-     * @param string $rule_string
-     * @param mixed  $value
+     * Apply a chain of filters to a value based on a rule string.
      *
-     * @return mixed
+     * @param string $ruleString Filter rules (e.g., "trim|uppercase")
+     * @param mixed $value The value to filter
+     * @return mixed The filtered value
      */
-    public function filterValue(string $rule_string, mixed $value): mixed
+    public function filterValue(string $ruleString, mixed $value): mixed
     {
-        $rules = [];
-        $rules_strings = explode('|', $rule_string);
-        foreach ($rules_strings as $rule_string) {
-            $rules[] = ValidationRuleParser::parse($rule_string);
-        }
+        $rules = array_map(
+            fn (string $rule) => ValidationRuleParser::parse($rule),
+            explode('|', $ruleString)
+        );
 
         foreach ($rules as $rule) {
             $value = $this->applyFilter($rule, $value);

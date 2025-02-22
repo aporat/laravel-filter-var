@@ -1,31 +1,166 @@
 # Laravel Filter Var
 
-[![codecov](https://codecov.io/github/aporat/laravel-filter-var/graph/badge.svg?token=VPCAXPZUBP)](https://codecov.io/github/aporat/laravel-filter-var)
-[![StyleCI](https://github.styleci.io/repos/288753189/shield?branch=master)](https://github.styleci.io/repos/288753189?branch=master)
-[![Latest Version](http://img.shields.io/packagist/v/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
+[![Latest Stable Version](https://img.shields.io/packagist/v/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
 [![Latest Dev Version](https://img.shields.io/packagist/vpre/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var#dev-develop)
 [![Monthly Downloads](https://img.shields.io/packagist/dm/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
+[![Codecov](https://codecov.io/github/aporat/laravel-filter-var/graph/badge.svg?token=VPCAXPZUBP)](https://codecov.io/github/aporat/laravel-filter-var)
+[![StyleCI](https://github.styleci.io/repos/288753189/shield?branch=master)](https://github.styleci.io/repos/288753189?branch=master)
+[![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/master/LICENSE)
 
+A Laravel package for filtering and sanitizing request variables with a chainable, customizable filter system.
 
-Laravel package for filtering and sanitizing request variables
+## Features
+- Chain multiple filters (e.g., `trim`, `uppercase`, `cast`) in a single call.
+- Built-in filters for common tasks (e.g., `strip_tags`, `escape`, `format_date`).
+- Support for custom filters via configuration.
+- Seamless integration with Laravel's service container and facade system.
+
+## Requirements
+- **PHP**: 8.2 or higher
+- **Laravel**: 10.x or 11.x
+- **Composer**: Required for installation
 
 ## Installation
+Install the package via [Composer](https://getcomposer.org/):
 
-The filter-var service provider can be installed via [Composer](https://getcomposer.org/).
-
-```
+```bash
 composer require aporat/laravel-filter-var
 ```
 
-To use the FilterVar service provider, you must register the provider when bootstrapping your application.
+The service provider (`FilterVarServiceProvider`) is automatically registered via Laravel’s package discovery. If you’ve disabled auto-discovery, add it manually to `config/app.php`:
+
+```php
+'providers' => [
+    // ...
+    Aporat\FilterVar\Laravel\FilterVarServiceProvider::class,
+],
+```
+
+Optionally, register the facade for cleaner syntax:
+
+```php
+'aliases' => [
+    // ...
+    'FilterVar' => Aporat\FilterVar\Laravel\Facades\FilterVar::class,
+],
+```
+
+Publish the configuration file to customize filters:
+
+```bash
+php artisan vendor:publish --provider="Aporat\FilterVar\Laravel\FilterVarServiceProvider" --tag="config"
+```
+
+This copies `config/filter-var.php` to your Laravel config directory.
 
 ## Usage
 
-Filter and escape user agent header:
+### Basic Filtering
+Filter and sanitize a request variable using the facade:
+
 ```php
-$user_agent = FilterVar::filterValue('cast:string|trim|strip_tags|escape', $request->header('User-Agent'));
+use Aporat\FilterVar\Laravel\Facades\FilterVar;
+
+$userAgent = FilterVar::filterValue('cast:string|trim|strip_tags|escape', $request->header('User-Agent'));
 ```
 
-## License]()
+This:
+- Casts the input to a string.
+- Trims whitespace.
+- Removes HTML/PHP tags.
+- Escapes special HTML characters.
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+### Available Filters
+| Filter         | Description                                      | Example Input       | Example Output     |
+|----------------|--------------------------------------------------|---------------------|--------------------|
+| `capitalize`   | Capitalizes words (title case)                  | `hello world`       | `Hello World`      |
+| `cast:<type>`  | Casts to a type (e.g., `int`, `string`, `bool`) | `123.45` (cast:int) | `123`             |
+| `digit`        | Extracts digits only                            | `abc123xyz`         | `123`             |
+| `escape`       | Escapes HTML special characters                 | `<p>Hello &</p>`    | `<p>Hello &</p>` |
+| `filter_if`    | Conditional check on array key/value            | `['key' => 'val']`  | `true`/`false`     |
+| `format_date`  | Reformats a date string                         | `2023-01-15`        | `15/01/2023`       |
+| `lowercase`    | Converts to lowercase                           | `HELLO`             | `hello`            |
+| `strip_tags`   | Removes HTML/PHP tags                           | `<b>Hello</b>`      | `Hello`            |
+| `trim`         | Trims whitespace                                | `  hello  `         | `hello`            |
+| `uppercase`    | Converts to uppercase                           | `hello`             | `HELLO`            |
+
+### Chaining Filters
+Chain multiple filters using the `|` separator:
+
+```php
+$result = FilterVar::filterValue('trim|uppercase|cast:string', '  hello world  ');
+// Returns: "HELLO WORLD"
+```
+
+### Custom Filters
+Add custom filters by editing `config/filter-var.php`:
+
+```php
+return [
+    'custom_filters' => [
+        'media_real_id' => \App\Filters\MediaRealId::class,
+    ],
+];
+```
+
+Define the custom filter class:
+
+```php
+namespace App\Filters;
+
+use Aporat\FilterVar\Contracts\Filter;
+
+class MediaRealId implements Filter
+{
+    public function apply(mixed $value, array $options = []): string
+    {
+        $value = (string) $value;
+        return str_contains($value, '_') ? explode('_', $value, 2)[0] : $value;
+    }
+}
+```
+
+Use it:
+
+```php
+$result = FilterVar::filterValue('media_real_id', '11111_22222');
+// Returns: "11111"
+```
+
+### Using Without Facade
+Resolve from the container:
+
+```php
+$result = app('filter-var')->filterValue('trim', '  hello  ');
+// Returns: "hello"
+```
+
+## Testing
+Run the test suite:
+
+```bash
+composer test
+```
+
+Generate coverage reports:
+
+```bash
+composer test-coverage
+```
+
+## Contributing
+Contributions are welcome! Please:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m "Add amazing feature"`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
+5. Open a pull request.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## License
+This package is open-sourced under the [MIT License](LICENSE). See the [License File](LICENSE) for more information.
+
+## Support
+- **Issues**: [GitHub Issues](https://github.com/aporat/laravel-filter-var/issues)
+- **Source**: [GitHub Repository](https://github.com/aporat/laravel-filter-var)

@@ -5,12 +5,11 @@ namespace Aporat\FilterVar\Contracts;
 interface Filter
 {
     /**
-     *  Return the result of applying this filter to the given input.
+     * Apply the filter to the given value.
      *
-     * @param mixed $value
-     * @param array $options
-     *
-     * @return mixed
+     * @param mixed $value The value to filter
+     * @param array<string, mixed> $options Optional configuration for the filter
+     * @return mixed The filtered value
      */
     public function apply(mixed $value, array $options = []): mixed;
 }

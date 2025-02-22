@@ -7,12 +7,15 @@ use Aporat\FilterVar\Contracts\Filter;
 class EscapeHTML implements Filter
 {
     /**
-     *  Remove HTML tags and encode special characters from the given string.
+     * Escape HTML special characters in the given string.
      *
-     * @param mixed $value
-     * @param array $options
+     * This filter converts special characters (e.g., <, >, &, ") to their HTML entities
+     * using htmlspecialchars. If the input is a string, it’s escaped; non-string inputs
+     * are returned unchanged.
      *
-     * @return mixed
+     * @param mixed $value The value to escape (typically a string)
+     * @param array<string, mixed> $options Optional filter options (currently unused)
+     * @return mixed The escaped string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed
     {
