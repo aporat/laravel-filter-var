@@ -20,8 +20,9 @@ class MediaRealId implements Filter
      * If the input contains an underscore, returns the substring before it.
      * Otherwise, returns the input as-is. Non-string inputs are cast to string.
      *
-     * @param mixed $value The value to process (typically a string like "11111_22222")
+     * @param mixed                $value   The value to process (typically a string like "11111_22222")
      * @param array<string, mixed> $options Optional filter options (currently unused)
+     *
      * @return string The extracted ID as a string
      */
     public function apply(mixed $value, array $options = []): string
@@ -30,6 +31,7 @@ class MediaRealId implements Filter
 
         if (str_contains($value, '_')) {
             [$id] = explode('_', $value, 2);
+
             return $id;
         }
 
@@ -45,7 +47,7 @@ class CustomFilterTest extends TestCase
     {
         parent::setUp();
 
-        $config = require __DIR__ . '/../config/filter-var.php';
+        $config = require __DIR__.'/../config/filter-var.php';
         $config['custom_filters'] = [
             'MediaRealId' => MediaRealId::class,
         ];

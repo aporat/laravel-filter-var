@@ -35,26 +35,27 @@ class FilterVar
     {
         return [
             'Capitalize' => Filters\Capitalize::class,
-            'Cast' => Filters\Cast::class,
-            'Escape' => Filters\EscapeHTML::class,
+            'Cast'       => Filters\Cast::class,
+            'Escape'     => Filters\EscapeHTML::class,
             'FormatDate' => Filters\FormatDate::class,
-            'Lowercase' => Filters\Lowercase::class,
-            'Uppercase' => Filters\Uppercase::class,
-            'Trim' => Filters\Trim::class,
-            'StripTags' => Filters\StripTags::class,
-            'Digit' => Filters\Digit::class,
-            'FilterIf' => Filters\FilterIf::class,
+            'Lowercase'  => Filters\Lowercase::class,
+            'Uppercase'  => Filters\Uppercase::class,
+            'Trim'       => Filters\Trim::class,
+            'StripTags'  => Filters\StripTags::class,
+            'Digit'      => Filters\Digit::class,
+            'FilterIf'   => Filters\FilterIf::class,
         ];
     }
 
     /**
      * Apply a single filter to a value.
      *
-     * @param array{0: string, 1?: array<string, mixed>} $rule Filter name and optional options
-     * @param mixed $value The value to filter
-     * @return mixed The filtered value
+     * @param array{0: string, 1?: array<string, mixed>} $rule  Filter name and optional options
+     * @param mixed                                      $value The value to filter
      *
      * @throws InvalidArgumentException If the filter name is not registered
+     *
+     * @return mixed The filtered value
      */
     protected function applyFilter(array $rule, mixed $value): mixed
     {
@@ -75,7 +76,8 @@ class FilterVar
      * Apply a chain of filters to a value based on a rule string.
      *
      * @param string $ruleString Filter rules (e.g., "trim|uppercase")
-     * @param mixed $value The value to filter
+     * @param mixed  $value      The value to filter
+     *
      * @return mixed The filtered value
      */
     public function filterValue(string $ruleString, mixed $value): mixed

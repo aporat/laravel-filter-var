@@ -35,7 +35,7 @@ class FilterVarServiceProviderTest extends TestCase
 
     public function test_config_is_publishable(): void
     {
-        $sourcePath = realpath(__DIR__ . '/../config/filter-var.php');
+        $sourcePath = realpath(__DIR__.'/../config/filter-var.php');
         $targetPath = $this->app->configPath('filter-var.php');
 
         $this->artisan('vendor:publish', ['--provider' => FilterVarServiceProvider::class, '--force' => true]);

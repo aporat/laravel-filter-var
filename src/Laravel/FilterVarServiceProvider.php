@@ -13,7 +13,7 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
      *
      * @var string
      */
-    protected string $configPath = __DIR__ . '/../../config/filter-var.php';
+    protected string $configPath = __DIR__.'/../../config/filter-var.php';
 
     /**
      * Register the service provider bindings in the container.
