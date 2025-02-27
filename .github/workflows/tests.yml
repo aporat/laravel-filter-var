@@ -47,8 +47,7 @@ jobs:
               uses: actions/cache@v3
               with:
                   path: vendor
-                  key: "php-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
-                  restore-keys: "php-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-"
+                  key: ${{ matrix.os }}-${{ matrix.php }}-${{ matrix.laravel }}-vendor-${{ hashFiles('**/composer.lock') }}
           
             - name: Install Dependencies
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
