@@ -46,10 +46,10 @@ jobs:
             - name: Cache dependencies
               uses: actions/cache@v3
               with:
-                path: ${{ steps.composer-cache.outputs.dir }}
-                key: "php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-${{ hashFiles('**/composer.json') }}"
-                restore-keys: "php-${{ matrix.php }}-laravel-${{ matrix.laravel }}-${{ hashFiles('**/composer.json') }}"
-
+                  path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+                  key: "php-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('composer.lock') }}"
+                  restore-keys: "php-${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-"
+          
             - name: Install Dependencies
               run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
