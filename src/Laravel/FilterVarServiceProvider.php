@@ -10,8 +10,6 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
 {
     /**
      * Path to the package's config file.
-     *
-     * @var string
      */
     protected string $configPath = __DIR__.'/../../config/filter-var.php';
 
