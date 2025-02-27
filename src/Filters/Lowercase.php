@@ -13,9 +13,8 @@ class Lowercase implements Filter
      * mb_strtolower with UTF-8 encoding. If the input is not a string, it is returned
      * unchanged.
      *
-     * @param mixed                $value   The value to convert (typically a string)
-     * @param array<string, mixed> $options Optional filter options (currently unused)
-     *
+     * @param  mixed  $value  The value to convert (typically a string)
+     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
      * @return mixed The lowercase string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed

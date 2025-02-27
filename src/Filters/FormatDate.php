@@ -19,20 +19,19 @@ class FormatDate implements Filter
      *
      * Example: $value = "2023-01-15", $options = ["Y-m-d", "d/m/Y"] => "15/01/2023"
      *
-     * @param mixed              $value   The date string to reformat
-     * @param array<int, string> $options Array with [0 => current format, 1 => target format]
+     * @param  mixed  $value  The date string to reformat
+     * @param  array<int, string>  $options  Array with [0 => current format, 1 => target format]
+     * @return mixed The reformatted date string or original value if empty
      *
      * @throws InvalidArgumentException If $options doesn’t contain exactly two formats
-     * @throws InvalidFormatException   If the date cannot be parsed
-     *
-     * @return mixed The reformatted date string or original value if empty
+     * @throws InvalidFormatException If the date cannot be parsed
      */
     public function apply(mixed $value, array $options = []): mixed
     {
-        if (!$value) {
+        if (! $value) {
             return $value;
         }
-        if (sizeof($options) != 2) {
+        if (count($options) != 2) {
             throw new InvalidArgumentException('The FilterVar Format Date filter requires both the current date format as well as the target format.');
         }
         $currentFormat = trim($options[0]);
