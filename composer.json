@@ -24,13 +24,12 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "illuminate/support": "^10.0 || ^11.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
         "nesbot/carbon": "^2.72 || ^3.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
+        "orchestra/testbench": "^8.0 || ^9.0 || ^10.0",
         "laravel/pint": "^1.21",
-        "orchestra/testbench": "^9.11",
         "phpunit/phpunit": "^11.0"
     },
     "autoload": {
@@ -63,8 +62,7 @@
     },
     "scripts": {
         "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-html coverage",
-        "test-ci": "phpunit --colors=always --coverage-text --coverage-clover coverage.xml",
+        "test-ci": "phpunit --colors=always --coverage-text --coverage-clover coverage.xml --log-junit junit.xml",
         "lint": "php-cs-fixer fix --dry-run --diff",
         "lint-fix": "php-cs-fixer fix",
         "post-install-cmd": [
