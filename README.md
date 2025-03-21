@@ -1,10 +1,11 @@
 # Laravel Filter Var
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
-[![Latest Dev Version](https://img.shields.io/packagist/vpre/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var#dev-develop)
 [![Monthly Downloads](https://img.shields.io/packagist/dm/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
-[![Codecov](https://codecov.io/github/aporat/laravel-filter-var/graph/badge.svg?token=VPCAXPZUBP)](https://codecov.io/github/aporat/laravel-filter-var)
-[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-orange.svg)](https://laravel.com/docs/12.x)
+[![Codecov](https://img.shields.io/codecov/c/github/aporat/laravel-filter-var?style=flat-square)](https://codecov.io/github/aporat/laravel-filter-var)
+[![Laravel Version](https://img.shields.io/badge/Laravel-12.x-orange.svg?style=flat-square)](https://laravel.com/docs/12.x)
+[![Scrutinizer build (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/build/g/aporat/laravel-filter-var?style=flat-square)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/build-status/master)
+[![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/aporat/laravel-filter-var?style=flat-square)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/?branch=master)
 [![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/master/LICENSE)
 
 A Laravel package for filtering and sanitizing request variables with a chainable, customizable filter system.
