@@ -6,6 +6,7 @@
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x-orange.svg?style=flat-square)](https://laravel.com/docs/12.x)
 [![Scrutinizer build (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/build/g/aporat/laravel-filter-var?style=flat-square)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/build-status/master)
 [![Scrutinizer quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/aporat/laravel-filter-var?style=flat-square)](https://scrutinizer-ci.com/g/aporat/laravel-filter-var/?branch=master)
+[![StyleCI](https://github.styleci.io/repos/288753189/shield?branch=master)](https://github.styleci.io/repos/288753189?branch=master)
 [![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/master/LICENSE)
 
 A Laravel package for filtering and sanitizing request variables with a chainable, customizable filter system.
