@@ -39,6 +39,7 @@ class FilterVar
             'Escape' => Filters\EscapeHTML::class,
             'FormatDate' => Filters\FormatDate::class,
             'Lowercase' => Filters\Lowercase::class,
+            'NormalString' => Filters\NormalString::class,
             'Uppercase' => Filters\Uppercase::class,
             'Trim' => Filters\Trim::class,
             'StripTags' => Filters\StripTags::class,
