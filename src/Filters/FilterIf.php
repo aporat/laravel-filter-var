@@ -15,9 +15,8 @@ class FilterIf implements Filter
      *
      * Example: If $value = ['status' => 'active'], $options = ['status', 'active'], returns true.
      *
-     * @param mixed             $value   The input value (expected to be an array)
-     * @param array<int, mixed> $options Array where $options[0] is the key and $options[1] is the expected value
-     *
+     * @param  mixed  $value  The input value (expected to be an array)
+     * @param  array<int, mixed>  $options  Array where $options[0] is the key and $options[1] is the expected value
      * @return mixed Returns bool (true if condition matches, false otherwise)
      */
     public function apply(mixed $value, array $options = []): mixed
