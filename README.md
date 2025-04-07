@@ -16,7 +16,7 @@ A Laravel package for filtering and sanitizing request variables with a chainabl
 - Seamless integration with Laravel's service container and facade system.
 
 ## Requirements
-- **PHP**: 8.2 or higher
+- **PHP**: 8.3 or higher
 - **Laravel**: 10.x, 11.x or 12.x
 - **Composer**: Required for installation
 
