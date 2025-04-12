@@ -9,6 +9,9 @@ use Aporat\FilterVar\Filters\EscapeHTML;
 use Aporat\FilterVar\Filters\FilterIf;
 use Aporat\FilterVar\Filters\FormatDate;
 use Aporat\FilterVar\Filters\Lowercase;
+use Aporat\FilterVar\Filters\NormalString;
+use Aporat\FilterVar\Filters\RemoveWhitespace;
+use Aporat\FilterVar\Filters\Slugify;
 use Aporat\FilterVar\Filters\StripTags;
 use Aporat\FilterVar\Filters\Trim;
 use Aporat\FilterVar\Filters\Uppercase;
@@ -162,5 +165,46 @@ class FilterTest extends TestCase
     {
         $filter = new Uppercase;
         $this->assertSame(123, $filter->apply(123));
+    }
+
+    public function test_normal_string_removes_special_characters(): void
+    {
+        $filter = new NormalString;
+        $this->assertEquals('Hello123', $filter->apply('<b>Hello</b>!@#123'));
+        $this->assertEquals('Test alert1 2024-04-12 14:30:00', $filter->apply('Test <script>alert(1)</script> 2024-04-12 14:30:00'));
+    }
+
+    public function test_normal_string_preserves_valid_characters(): void
+    {
+        $filter = new NormalString;
+        $this->assertEquals('ABC def 123 -:_.', $filter->apply('ABC def 123 -:_.'));
+    }
+
+    public function test_normal_string_handles_non_string_input(): void
+    {
+        $filter = new NormalString;
+        $this->assertEquals('12345', $filter->apply(12345));
+    }
+
+    public function test_remove_whitespace_removes_all_spaces(): void
+    {
+        $filter = new RemoveWhitespace;
+        $this->assertEquals('abc123', $filter->apply(' a b  c 1 2 3 '));
+        $this->assertEquals('textwithnospaces', $filter->apply("text\nwith\r\nno\tspaces"));
+    }
+
+    public function test_remove_whitespace_preserves_non_strings(): void
+    {
+        $filter = new RemoveWhitespace;
+        $this->assertSame(12345, $filter->apply(12345));
+        $this->assertSame(null, $filter->apply(null));
+    }
+
+    public function test_slugify_converts_to_slug(): void
+    {
+        $filter = new Slugify;
+        $this->assertEquals('hello-world', $filter->apply('Hello World!'));
+        $this->assertEquals('test-123', $filter->apply('Test 123 @#!'));
+        $this->assertEquals('a-b-c', $filter->apply(' a - b - c '));
     }
 }

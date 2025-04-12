@@ -45,6 +45,8 @@ class FilterVar
             'StripTags' => Filters\StripTags::class,
             'Digit' => Filters\Digit::class,
             'FilterIf' => Filters\FilterIf::class,
+            'RemoveWhitespace' => Filters\RemoveWhitespace::class,
+            'Slugify' => Filters\Slugify::class,
         ];
     }
 
