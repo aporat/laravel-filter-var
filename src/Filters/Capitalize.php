@@ -13,7 +13,7 @@ class Capitalize implements Filter
      * capitalization using multibyte-safe functions. Non-string inputs are returned unchanged.
      *
      * @param  mixed  $value  The value to capitalize
-     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
+     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
      * @return mixed The capitalized string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed

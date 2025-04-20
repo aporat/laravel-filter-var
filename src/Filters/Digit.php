@@ -15,7 +15,7 @@ class Digit implements Filter
      * is returned if no digits are present or if the input is null.
      *
      * @param  mixed  $value  The value to filter (typically a string)
-     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
+     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
      * @return string The filtered value containing only digits
      */
     public function apply(mixed $value, array $options = []): string

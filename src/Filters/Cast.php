@@ -16,7 +16,7 @@ class Cast implements Filter
      * array, collection. If an unsupported type is provided, an exception is thrown.
      *
      * @param  mixed  $value  The value to cast
-     * @param  array  $options  Options array where the first element specifies the target type
+     * @param  array<int, mixed>  $options  Options array where the first element specifies the target type
      * @return mixed The value cast to the specified type
      *
      * @throws InvalidArgumentException If the type is invalid or not provided

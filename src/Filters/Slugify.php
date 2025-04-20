@@ -6,7 +6,7 @@ use Aporat\FilterVar\Contracts\Filter;
 
 class Slugify implements Filter
 {
-    public function apply(mixed $value, array $options = []): mixed
+    public function apply(mixed $value, array $options = []): string
     {
         $value = preg_replace('/[^A-Za-z0-9]+/', '-', (string) $value); // replace all non-alphanum with dash
         $value = trim($value, '-'); // remove leading/trailing dashes

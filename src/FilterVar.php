@@ -53,7 +53,7 @@ class FilterVar
     /**
      * Apply a single filter to a value.
      *
-     * @param  array{0: string, 1?: array<string, mixed>}  $rule  Filter name and optional options
+     * @param  array{0: string, 1?: array<int, mixed>}  $rule  Filter name and optional options
      * @param  mixed  $value  The value to filter
      * @return mixed The filtered value
      *

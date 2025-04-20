@@ -14,7 +14,7 @@ class Uppercase implements Filter
      * is returned unchanged.
      *
      * @param  mixed  $value  The value to convert (typically a string)
-     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
+     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
      * @return mixed The uppercase string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed

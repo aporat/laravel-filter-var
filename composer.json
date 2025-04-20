@@ -22,15 +22,16 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "ext-json": "*",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0",
         "nesbot/carbon": "^2.72 || ^3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^8.0 || ^9.0 || ^10.0",
         "laravel/pint": "^1.21",
-        "phpunit/phpunit": "^11.0"
+        "orchestra/testbench": "^8.0 || ^9.0 || ^10.0",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {
@@ -63,7 +64,8 @@
     "scripts": {
         "test": "phpunit --colors=always",
         "test-ci": "phpunit --colors=always --coverage-text --coverage-clover coverage.xml --log-junit junit.xml",
-        "check": "vendor/bin/pint --test"
+        "check": "vendor/bin/pint --test",
+        "analyze": "phpstan analyse src --level=6 --memory-limit=-1"
     },
     "support": {
         "issues": "https://github.com/aporat/laravel-filter-var/issues",

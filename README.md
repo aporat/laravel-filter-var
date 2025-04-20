@@ -1,7 +1,7 @@
 # Laravel Filter Var
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
-[![Monthly Downloads](https://img.shields.io/packagist/dm/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
+[![Downloads](https://img.shields.io/packagist/dt/aporat/laravel-filter-var.svg?style=flat-square&logo=composer)](https://packagist.org/packages/aporat/laravel-filter-var)
 [![Codecov](https://img.shields.io/codecov/c/github/aporat/laravel-filter-var?style=flat-square)](https://codecov.io/github/aporat/laravel-filter-var)
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x-orange.svg?style=flat-square)](https://laravel.com/docs/12.x)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/aporat/laravel-filter-var/ci.yml?style=flat-square)

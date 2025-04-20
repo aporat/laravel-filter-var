@@ -13,7 +13,7 @@ class StripTags implements Filter
      * leaving only plain text. If the input is not a string, it is returned unchanged.
      *
      * @param  mixed  $value  The value to process (typically a string)
-     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
+     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
      * @return mixed The tag-stripped string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed

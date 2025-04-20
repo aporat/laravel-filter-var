@@ -14,7 +14,7 @@ class EscapeHTML implements Filter
      * are returned unchanged.
      *
      * @param  mixed  $value  The value to escape (typically a string)
-     * @param  array<string, mixed>  $options  Optional filter options (currently unused)
+     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
      * @return mixed The escaped string or original value if not a string
      */
     public function apply(mixed $value, array $options = []): mixed
