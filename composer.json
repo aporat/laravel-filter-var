@@ -65,7 +65,7 @@
         "test": "phpunit --colors=always",
         "test-ci": "phpunit --colors=always --coverage-text --coverage-clover coverage.xml --log-junit junit.xml",
         "check": "vendor/bin/pint --test",
-        "analyze": "phpstan analyse src --level=6 --memory-limit=-1"
+        "analyze": "phpstan analyse src --level=7 --memory-limit=-1"
     },
     "support": {
         "issues": "https://github.com/aporat/laravel-filter-var/issues",

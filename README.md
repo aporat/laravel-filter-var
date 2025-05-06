@@ -32,7 +32,7 @@ The service provider (`FilterVarServiceProvider`) is automatically registered vi
 ```php
 'providers' => [
     // ...
-    Aporat\FilterVar\Laravel\FilterVarServiceProvider::class,
+    \Aporat\FilterVar\FilterVarServiceProvider::class,
 ],
 ```
 

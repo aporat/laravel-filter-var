@@ -1,8 +1,7 @@
 <?php
 
-namespace Aporat\FilterVar\Laravel;
+namespace Aporat\FilterVar;
 
-use Aporat\FilterVar\FilterVar;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,7 +10,7 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
     /**
      * Path to the package's config file.
      */
-    protected string $configPath = __DIR__.'/../../config/filter-var.php';
+    protected string $configPath = __DIR__.'/../config/filter-var.php';
 
     /**
      * Register the service provider bindings in the container.

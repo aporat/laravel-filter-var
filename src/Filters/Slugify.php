@@ -8,7 +8,7 @@ class Slugify implements Filter
 {
     public function apply(mixed $value, array $options = []): string
     {
-        $value = preg_replace('/[^A-Za-z0-9]+/', '-', (string) $value); // replace all non-alphanum with dash
+        $value = preg_replace('/[^A-Za-z0-9]+/', '-', (string) $value); // replace all non-alphanumeric with dash
         $value = trim($value, '-'); // remove leading/trailing dashes
 
         return strtolower($value);

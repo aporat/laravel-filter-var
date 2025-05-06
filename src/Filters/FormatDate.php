@@ -19,7 +19,7 @@ class FormatDate implements Filter
      *
      * Example: $value = "2023-01-15", $options = ["Y-m-d", "d/m/Y"] => "15/01/2023"
      *
-     * @param  mixed  $value  The date string to reformat
+     * @param  mixed  $value  The string to reformat
      * @param  array<int, mixed>  $options  Array with [0 => current format, 1 => target format]
      * @return mixed The reformatted date string or original value if empty
      *

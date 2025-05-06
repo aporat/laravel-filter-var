@@ -1,6 +1,6 @@
 <?php
 
-namespace Aporat\FilterVar\Laravel\Facades;
+namespace Aporat\FilterVar\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

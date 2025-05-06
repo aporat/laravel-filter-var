@@ -3,7 +3,7 @@
 namespace Aporat\FilterVar\Tests;
 
 use Aporat\FilterVar\FilterVar;
-use Aporat\FilterVar\Laravel\FilterVarServiceProvider;
+use Aporat\FilterVar\FilterVarServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 class FilterVarServiceProviderTest extends TestCase
