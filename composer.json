@@ -54,10 +54,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Aporat\\FilterVar\\Laravel\\FilterVarServiceProvider"
+                "Aporat\\FilterVar\\FilterVarServiceProvider"
             ],
             "aliases": {
-                "FilterVar": "Aporat\\FilterVar\\Laravel\\Facades\\FilterVar"
+                "FilterVar": "Aporat\\FilterVar\\Facades\\FilterVar"
             }
         }
     },
