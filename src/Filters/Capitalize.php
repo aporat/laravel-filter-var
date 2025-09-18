@@ -4,17 +4,22 @@ namespace Aporat\FilterVar\Filters;
 
 use Aporat\FilterVar\Contracts\Filter;
 
-class Capitalize implements Filter
+/**
+ * Capitalizes a string value using title case.
+ *
+ * @implements Filter<mixed, mixed>
+ */
+final readonly class Capitalize implements Filter
 {
     /**
-     * Capitalize a string value using title case, preserving non-string values.
+     * Capitalizes a string, preserving non-string values.
      *
-     * This filter converts the input to lowercase first, then applies title case
-     * capitalization using multibyte-safe functions. Non-string inputs are returned unchanged.
+     * This filter uses multibyte-safe functions to apply title case
+     * capitalization. Non-string inputs are returned unchanged.
      *
-     * @param  mixed  $value  The value to capitalize
-     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
-     * @return mixed The capitalized string or original value if not a string
+     * @param  mixed  $value  The value to capitalize.
+     * @param  array<int, mixed>  $options  (Unused)
+     * @return mixed The capitalized string or original value.
      */
     public function apply(mixed $value, array $options = []): mixed
     {
@@ -22,8 +27,13 @@ class Capitalize implements Filter
             return $value;
         }
 
-        $lowercase = mb_strtolower($value, 'UTF-8');
-
-        return mb_convert_case($lowercase, MB_CASE_TITLE, 'UTF-8');
+        return mb_convert_case(
+            string: mb_strtolower(
+                string: $value,
+                encoding: 'UTF-8'
+            ),
+            mode: MB_CASE_TITLE,
+            encoding: 'UTF-8'
+        );
     }
 }

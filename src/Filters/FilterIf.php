@@ -3,24 +3,39 @@
 namespace Aporat\FilterVar\Filters;
 
 use Aporat\FilterVar\Contracts\Filter;
+use InvalidArgumentException;
 
-class FilterIf implements Filter
+/**
+ * Conditionally checks if a key in an array matches an expected value.
+ *
+ * @implements Filter<mixed, bool>
+ */
+final readonly class FilterIf implements Filter
 {
     /**
-     * Check if a condition is met based on the input array and options.
+     * Checks if the condition is met.
      *
-     * This filter verifies if the input value is an array and contains a key (specified by
-     * $options[0]) whose value matches the expected value (specified by $options[1]).
-     * Returns true if the condition is met, false otherwise. Non-array inputs always return false.
+     * Returns true only if the input is an array and the specified key's
+     * value strictly matches the expected value.
      *
-     * Example: If $value = ['status' => 'active'], $options = ['status', 'active'], returns true.
+     * @param  mixed  $value  The input value, expected to be an array.
+     * @param  array<int, mixed>  $options  [$key, $expectedValue]
+     * @return bool True if the condition is met, false otherwise.
      *
-     * @param  mixed  $value  The input value (expected to be an array)
-     * @param  array<int, mixed>  $options  Array where $options[0] is the key and $options[1] is the expected value
-     * @return mixed Returns bool (true if condition matches, false otherwise)
+     * @throws InvalidArgumentException If options are not configured correctly.
      */
-    public function apply(mixed $value, array $options = []): mixed
+    public function apply(mixed $value, array $options = []): bool
     {
-        return array_key_exists($options[0], $value) && $value[$options[0]] === $options[1];
+        if (count($options) < 2) {
+            throw new InvalidArgumentException('The "FilterIf" filter requires two options: a key and a value to match.');
+        }
+
+        [$key, $expectedValue] = $options;
+
+        if (! is_array($value)) {
+            return false;
+        }
+
+        return array_key_exists(key: $key, array: $value) && $value[$key] === $expectedValue;
     }
 }

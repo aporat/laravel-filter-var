@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see \Aporat\FilterVar\FilterVar
  */
-class FilterVar extends Facade
+final class FilterVar extends Facade
 {
     /**
      * Get the registered name of the component in the service container.

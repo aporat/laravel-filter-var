@@ -1,7 +1,9 @@
 /.idea
 /build
 /vendor
+/coverage
 composer.phar
 composer.lock
 .DS_Store
 .phpunit*
+coverage.xml

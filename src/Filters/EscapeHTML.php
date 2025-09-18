@@ -4,21 +4,31 @@ namespace Aporat\FilterVar\Filters;
 
 use Aporat\FilterVar\Contracts\Filter;
 
-class EscapeHTML implements Filter
+/**
+ * Escapes HTML special characters in a string for safe output.
+ *
+ * @implements Filter<mixed, mixed>
+ */
+final readonly class EscapeHTML implements Filter
 {
     /**
-     * Escape HTML special characters in the given string.
+     * Escapes HTML special characters in a string.
      *
-     * This filter converts special characters (e.g., <, >, &, ") to their HTML entities
-     * using htmlspecialchars. If the input is a string, it’s escaped; non-string inputs
-     * are returned unchanged.
-     *
-     * @param  mixed  $value  The value to escape (typically a string)
-     * @param  array<int, mixed>  $options  Optional filter options (currently unused)
-     * @return mixed The escaped string or original value if not a string
+     * @param  mixed  $value  The value to escape.
+     * @param  array<int, mixed>  $options  (Unused)
+     * @return mixed The escaped string or the original value if not a string.
      */
     public function apply(mixed $value, array $options = []): mixed
     {
-        return is_string($value) ? htmlspecialchars($value) : $value;
+        if (! is_string($value)) {
+            return $value;
+        }
+
+        return htmlspecialchars(
+            string: $value,
+            flags: ENT_QUOTES | ENT_HTML5,
+            encoding: 'UTF-8',
+            double_encode: false
+        );
     }
 }

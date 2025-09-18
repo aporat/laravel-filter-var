@@ -7,91 +7,102 @@ use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationRuleParser;
 use InvalidArgumentException;
 
-class FilterVar
+final class FilterVar
 {
     /**
-     * Available filters mapped as filter name => class path.
+     * The default filter mappings.
      *
-     * @var array<string, class-string<Filter>>
+     * @var array<string, class-string<Filter<mixed, mixed>>>
      */
-    protected array $filters = [];
+    private const array DEFAULT_FILTERS = [
+        'Capitalize' => Filters\Capitalize::class,
+        'Cast' => Filters\Cast::class,
+        'Escape' => Filters\EscapeHTML::class,
+        'FormatDate' => Filters\FormatDate::class,
+        'Lowercase' => Filters\Lowercase::class,
+        'NormalString' => Filters\NormalString::class,
+        'Uppercase' => Filters\Uppercase::class,
+        'Trim' => Filters\Trim::class,
+        'StripTags' => Filters\StripTags::class,
+        'Digit' => Filters\Digit::class,
+        'FilterIf' => Filters\FilterIf::class,
+        'RemoveWhitespace' => Filters\RemoveWhitespace::class,
+        'Slugify' => Filters\Slugify::class,
+    ];
 
     /**
-     * Create a new FilterVar instance.
+     * The registered filter mappings.
+     * The key is the normalized (lowercase) filter name.
      *
-     * @param  array<string, mixed>  $config  Configuration array, optionally containing 'custom_filters'
+     * @var array<string, class-string<Filter<mixed, mixed>>>
+     */
+    private array $filters = [];
+
+    /**
+     * Cache of resolved filter instances.
+     *
+     * @var array<string, Filter<mixed, mixed>>
+     */
+    private array $resolvedFilters = [];
+
+    /**
+     * @param  array{custom_filters?: array<string, class-string<Filter<mixed, mixed>>>}  $config
      */
     public function __construct(array $config = [])
     {
-        $this->filters = array_merge($this->getDefaultFilters(), Arr::get($config, 'custom_filters', []));
-    }
+        $customFilters = Arr::get($config, 'custom_filters', []);
 
-    /**
-     * Get the default filter mappings.
-     *
-     * @return array<string, class-string<Filter>>
-     */
-    protected function getDefaultFilters(): array
-    {
-        return [
-            'Capitalize' => Filters\Capitalize::class,
-            'Cast' => Filters\Cast::class,
-            'Escape' => Filters\EscapeHTML::class,
-            'FormatDate' => Filters\FormatDate::class,
-            'Lowercase' => Filters\Lowercase::class,
-            'NormalString' => Filters\NormalString::class,
-            'Uppercase' => Filters\Uppercase::class,
-            'Trim' => Filters\Trim::class,
-            'StripTags' => Filters\StripTags::class,
-            'Digit' => Filters\Digit::class,
-            'FilterIf' => Filters\FilterIf::class,
-            'RemoveWhitespace' => Filters\RemoveWhitespace::class,
-            'Slugify' => Filters\Slugify::class,
-        ];
-    }
-
-    /**
-     * Apply a single filter to a value.
-     *
-     * @param  array<int, mixed>  $rule  Filter name and optional options
-     * @param  mixed  $value  The value to filter
-     * @return mixed The filtered value
-     *
-     * @throws InvalidArgumentException If the filter name is not registered
-     */
-    protected function applyFilter(array $rule, mixed $value): mixed
-    {
-        $name = $rule[0];
-        $options = $rule[1] ?? [];
-
-        if (! isset($this->filters[$name])) {
-            throw new InvalidArgumentException("No filter registered for the name '$name'.");
+        foreach (array_merge(self::DEFAULT_FILTERS, $customFilters) as $name => $class) {
+            $this->extend($name, $class);
         }
+    }
 
-        /** @var Filter $filter */
-        $filter = new $this->filters[$name];
-
-        return $filter->apply($value, $options);
+    /**
+     * Register a new custom filter at runtime.
+     *
+     * @param  string  $name  The name of the filter (e.g., 'trim').
+     * @param  class-string<Filter<mixed, mixed>>  $class  The filter's class path.
+     */
+    public function extend(string $name, string $class): void
+    {
+        $this->filters[strtolower($name)] = $class;
     }
 
     /**
      * Apply a chain of filters to a value based on a rule string.
-     *
-     * @param  string  $ruleString  Filter rules (e.g., "trim|uppercase")
-     * @param  mixed  $value  The value to filter
-     * @return mixed The filtered value
      */
     public function filterValue(string $ruleString, mixed $value): mixed
     {
         $rules = array_map(
-            fn (string $rule) => ValidationRuleParser::parse($rule),
+            static fn (string $rule): array => ValidationRuleParser::parse($rule),
             explode('|', $ruleString)
         );
 
         foreach ($rules as $rule) {
-            $value = $this->applyFilter($rule, $value);
+            [$name, $options] = [$rule[0], $rule[1] ?? []];
+
+            $filter = $this->resolveFilter($name);
+            $value = $filter->apply($value, $options);
         }
 
         return $value;
+    }
+
+    /**
+     * Resolve a filter instance, using a cache to avoid re-instantiation.
+     *
+     * @return Filter<mixed, mixed>
+     *
+     * @throws InvalidArgumentException
+     */
+    private function resolveFilter(string $name): Filter
+    {
+        $normalizedName = strtolower($name);
+
+        if (! isset($this->filters[$normalizedName])) {
+            throw new InvalidArgumentException("No filter registered for the name '$name'.");
+        }
+
+        return $this->resolvedFilters[$normalizedName] ??= new $this->filters[$normalizedName];
     }
 }

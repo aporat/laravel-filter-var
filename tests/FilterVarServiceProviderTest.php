@@ -5,45 +5,60 @@ namespace Aporat\FilterVar\Tests;
 use Aporat\FilterVar\FilterVar;
 use Aporat\FilterVar\FilterVarServiceProvider;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
-class FilterVarServiceProviderTest extends TestCase
+final class FilterVarServiceProviderTest extends TestCase
 {
     protected function getPackageProviders($app): array
     {
         return [FilterVarServiceProvider::class];
     }
 
-    public function test_service_is_registered_as_singleton(): void
+    #[Test]
+    public function service_is_registered_as_singleton(): void
     {
-        $this->assertTrue($this->app->bound('filter-var'));
+        // Test that both the class and the alias are bound in the container.
+        self::assertTrue($this->app->bound(FilterVar::class));
+        self::assertTrue($this->app->bound('filter-var'));
 
-        $instance1 = $this->app->make('filter-var');
+        // Resolve the service using both the class name and the alias.
+        $instance1 = $this->app->make(FilterVar::class);
         $instance2 = $this->app->make('filter-var');
 
-        $this->assertInstanceOf(FilterVar::class, $instance1);
-        $this->assertSame($instance1, $instance2, 'FilterVar should be a singleton');
+        // Assert that both resolutions return the exact same instance.
+        self::assertInstanceOf(FilterVar::class, $instance1);
+        self::assertSame($instance1, $instance2, 'FilterVar should be a singleton, and the alias should point to the same instance.');
     }
 
-    public function test_config_is_merged(): void
+    #[Test]
+    public function config_is_merged(): void
     {
         $config = $this->app['config']->get('filter-var');
 
-        $this->assertIsArray($config);
-        $this->assertArrayHasKey('custom_filters', $config);
-        $this->assertEmpty($config['custom_filters'], 'Default custom_filters should be an empty array');
+        self::assertIsArray($config);
+        self::assertArrayHasKey('custom_filters', $config);
+        self::assertEmpty($config['custom_filters'], 'Default custom_filters should be an empty array');
     }
 
-    public function test_config_is_publishable(): void
+    #[Test]
+    public function config_is_publishable(): void
     {
         $sourcePath = realpath(__DIR__.'/../config/filter-var.php');
         $targetPath = $this->app->configPath('filter-var.php');
 
-        $this->artisan('vendor:publish', ['--provider' => FilterVarServiceProvider::class, '--force' => true]);
+        // Use named arguments for better clarity.
+        $this->artisan(
+            command: 'vendor:publish',
+            parameters: [
+                '--provider' => FilterVarServiceProvider::class,
+                '--force' => true,
+            ]
+        );
 
-        $this->assertFileExists($targetPath);
-        $this->assertFileEquals($sourcePath, $targetPath);
+        self::assertFileExists($targetPath);
+        self::assertFileEquals($sourcePath, $targetPath);
 
-        // Clean up
+        // Clean up the published file.
         unlink($targetPath);
     }
 }

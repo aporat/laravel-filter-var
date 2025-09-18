@@ -5,48 +5,77 @@ namespace Aporat\FilterVar\Filters;
 use Aporat\FilterVar\Contracts\Filter;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use stdClass;
 
-class Cast implements Filter
+/**
+ * Casts a value to a specified type.
+ *
+ * @implements Filter<mixed, mixed>
+ */
+final readonly class Cast implements Filter
 {
     /**
-     * Cast the given value to a specified type.
+     * Casts the given value to a specified type.
      *
-     * The target type is determined by the first element in $options (e.g., $options[0]).
-     * Supported types: int, integer, float, real, double, string, bool, boolean, object,
-     * array, collection. If an unsupported type is provided, an exception is thrown.
+     * @param  mixed  $value  The value to cast.
+     * @param  array<int, string>  $options  Options array where the first element is the target type.
+     * @return mixed The value cast to the specified type.
      *
-     * @param  mixed  $value  The value to cast
-     * @param  array<int, mixed>  $options  Options array where the first element specifies the target type
-     * @return mixed The value cast to the specified type
-     *
-     * @throws InvalidArgumentException If the type is invalid or not provided
+     * @throws InvalidArgumentException If a casting type is not provided or is unsupported.
      */
     public function apply(mixed $value, array $options = []): mixed
     {
         $type = $options[0] ?? null;
-        switch ($type) {
-            case 'int':
-            case 'integer':
-                return (int) $value;
-            case 'real':
-            case 'float':
-            case 'double':
-                return (float) $value;
-            case 'string':
-                return (string) $value;
-            case 'bool':
-            case 'boolean':
-                return (bool) $value;
-            case 'object':
-                return is_array($value) ? (object) $value : json_decode($value, false);
-            case 'array':
-                return json_decode($value, true);
-            case 'collection':
-                $array = is_array($value) ? $value : json_decode($value, true);
 
-                return new Collection($array);
-            default:
-                throw new InvalidArgumentException("Wrong FilterVar casting format: $type.");
+        if ($type === null) {
+            throw new InvalidArgumentException('Casting type must be provided for the "Cast" filter.');
         }
+
+        return match ($type) {
+            'int', 'integer' => (int) $value,
+            'real', 'float', 'double' => (float) $value,
+            'string' => (string) $value,
+            'bool', 'boolean' => (bool) $value,
+            'array' => $this->toArray($value),
+            'object' => $this->toObject($value),
+            'collection' => new Collection($this->toArray($value)),
+            default => throw new InvalidArgumentException("Invalid casting type provided: '$type'."),
+        };
+    }
+
+    /**
+     * Convert a mixed value to an array.
+     *
+     * @return array<mixed>
+     */
+    private function toArray(mixed $value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return json_decode(json: $value, associative: true) ?? [];
+        }
+
+        // Handles objects and other types
+        return (array) $value;
+    }
+
+    /**
+     * Convert a mixed value to an object.
+     */
+    private function toObject(mixed $value): object
+    {
+        if (is_object($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return json_decode(json: $value, associative: false) ?? new stdClass;
+        }
+
+        // Handles arrays and other types
+        return (object) $value;
     }
 }

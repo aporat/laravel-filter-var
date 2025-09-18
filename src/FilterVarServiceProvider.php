@@ -2,15 +2,22 @@
 
 namespace Aporat\FilterVar;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
+final class FilterVarServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Path to the package's config file.
+     * The absolute path to the package's configuration file.
      */
-    protected string $configPath = __DIR__.'/../config/filter-var.php';
+    private readonly string $configPath;
+
+    public function __construct(Application $app)
+    {
+        parent::__construct($app);
+        $this->configPath = __DIR__.'/../config/filter-var.php';
+    }
 
     /**
      * Register the service provider bindings in the container.
@@ -18,6 +25,16 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
     public function register(): void
     {
         $this->mergeConfigFrom($this->configPath, 'filter-var');
+
+        // Bind the main class to the container. This is better than binding a string key
+        // as it allows for type-hinting and is refactor-friendly.
+        $this->app->singleton(
+            abstract: FilterVar::class,
+            concrete: fn (Application $app): FilterVar => new FilterVar($app->make('config')->get('filter-var', []))
+        );
+
+        // Alias the class to the string used by the facade for compatibility.
+        $this->app->alias(FilterVar::class, 'filter-var');
     }
 
     /**
@@ -25,25 +42,26 @@ class FilterVarServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function boot(): void
     {
-        $this->publishes([$this->configPath => config_path('filter-var.php')], 'config');
-        $this->registerFilterService();
-    }
-
-    /**
-     * Register the FilterVar singleton in the application container.
-     */
-    protected function registerFilterService(): void
-    {
-        $this->app->singleton('filter-var', fn ($app) => new FilterVar($app['config']['filter-var']));
+        // Assets should only be published when running in the console
+        // to avoid unnecessary work during a web request.
+        if ($this->app->runningInConsole()) {
+            $this->publishes(
+                paths: [$this->configPath => config_path('filter-var.php')],
+                groups: 'config'
+            );
+        }
     }
 
     /**
      * Get the services provided by this provider.
      *
-     * @return array<int, string>
+     * @return array<int, class-string|string>
      */
     public function provides(): array
     {
-        return ['filter-var'];
+        return [
+            FilterVar::class,
+            'filter-var',
+        ];
     }
 }

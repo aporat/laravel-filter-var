@@ -7,36 +7,47 @@ use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use InvalidArgumentException;
 
-class FormatDate implements Filter
+/**
+ * Reformats a date string from one format to another.
+ *
+ * @implements Filter<mixed, string|mixed>
+ */
+final readonly class FormatDate implements Filter
 {
     /**
-     * Reformat a date string from one format to another using Carbon.
+     * Reformats a date string using Carbon.
      *
-     * This filter takes a date string ($value) in a specified current format ($options[0])
-     * and converts it to a target format ($options[1]). Both formats must be provided in
-     * the $options array. If the input is empty or invalid, it’s returned unchanged or
-     * an exception is thrown.
+     * @param  mixed  $value  The date string to reformat.
+     * @param  array<int, string>  $options  [$currentFormat, $targetFormat]
+     * @return mixed The new date string or the original value if invalid.
      *
-     * Example: $value = "2023-01-15", $options = ["Y-m-d", "d/m/Y"] => "15/01/2023"
-     *
-     * @param  mixed  $value  The string to reformat
-     * @param  array<int, mixed>  $options  Array with [0 => current format, 1 => target format]
-     * @return mixed The reformatted date string or original value if empty
-     *
-     * @throws InvalidArgumentException If $options doesn’t contain exactly two formats
-     * @throws InvalidFormatException If the date cannot be parsed
+     * @throws InvalidArgumentException If options are not configured correctly.
      */
     public function apply(mixed $value, array $options = []): mixed
     {
-        if (! $value) {
+        if (empty($value)) {
             return $value;
         }
-        if (count($options) != 2) {
-            throw new InvalidArgumentException('The FilterVar Format Date filter requires both the current date format as well as the target format.');
-        }
-        $currentFormat = trim($options[0]);
-        $targetFormat = trim($options[1]);
 
-        return Carbon::createFromFormat($currentFormat, $value)->format($targetFormat);
+        if (count($options) !== 2) {
+            throw new InvalidArgumentException('The "FormatDate" filter requires two options: the current format and the target format.');
+        }
+
+        [$currentFormat, $targetFormat] = $options;
+
+        try {
+            $date = Carbon::createFromFormat(
+                format: trim($currentFormat),
+                time: (string) $value
+            );
+
+            if ($date === null) {
+                return $value;
+            }
+
+            return $date->format($targetFormat);
+        } catch (InvalidFormatException) {
+            return $value;
+        }
     }
 }
