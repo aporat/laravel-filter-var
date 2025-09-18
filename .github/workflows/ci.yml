@@ -17,7 +17,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v6
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -26,7 +26,7 @@ jobs:
                   tools: composer:v2
 
             - name: Cache Composer dependencies
-              uses: actions/cache@v5
+              uses: actions/cache@v4
               with:
                   path: vendor
                   key: ubuntu-php-8.4-lint-${{ hashFiles('**/composer.lock') }}
@@ -34,7 +34,7 @@ jobs:
                       ubuntu-php-8.4-lint-
 
             - name: Install Dependencies
-              uses: ramsey/composer-install@v4
+              uses: ramsey/composer-install@v3
 
             - name: Execute linter (Pint)
               run: composer lint
@@ -55,7 +55,7 @@ jobs:
 
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v6
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -65,7 +65,7 @@ jobs:
                   coverage: xdebug
 
             - name: Cache Composer dependencies
-              uses: actions/cache@v5
+              uses: actions/cache@v4
               with:
                   path: vendor
                   key: ubuntu-${{ matrix.php }}-${{ matrix.laravel }}-${{ hashFiles('**/composer.lock') }}
@@ -73,15 +73,15 @@ jobs:
                       ubuntu-${{ matrix.php }}-${{ matrix.laravel }}-
 
             - name: Install Dependencies
-              uses: ramsey/composer-install@v4
+              uses: ramsey/composer-install@v3
 
             - name: Execute tests (PHPUnit)
               run: composer test-ci
 
             - name: Upload coverage to Codecov
               if: matrix.php == '8.4' && matrix.laravel == '12.*'
-              uses: codecov/codecov-action@v6
+              uses: codecov/codecov-action@v4
 
             - name: Upload test results to Codecov
               if: matrix.php == '8.4' && matrix.laravel == '12.*'
-              uses: codecov/test-results-action@v2
+              uses: codecov/test-results-action@v1
