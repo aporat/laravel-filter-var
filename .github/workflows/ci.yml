@@ -80,7 +80,7 @@ jobs:
 
             - name: Upload coverage to Codecov
               if: matrix.php == '8.4' && matrix.laravel == '12.*'
-              uses: codecov/codecov-action@v4
+              uses: codecov/codecov-action@v5
 
             - name: Upload test results to Codecov
               if: matrix.php == '8.4' && matrix.laravel == '12.*'
