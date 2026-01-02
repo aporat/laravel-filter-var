@@ -29,9 +29,9 @@ jobs:
               uses: actions/cache@v5
               with:
                   path: vendor
-                  key: ubuntu-php-8.4-lint-${{ hashFiles('**/composer.lock') }}
+                  key: ubuntu-php-8.5-lint-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
-                      ubuntu-php-8.4-lint-
+                      ubuntu-php-8.5-lint-
 
             - name: Install Dependencies
               uses: ramsey/composer-install@v3
@@ -50,8 +50,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [8.4]
-                laravel: [12.*] # Matrix is kept to L12 due to PHP 8.4 requirement
+                php: ['8.4', '8.5']
+                laravel: [12.*]
 
         steps:
             - name: Checkout Code
@@ -79,9 +79,9 @@ jobs:
               run: composer test-ci
 
             - name: Upload coverage to Codecov
-              if: matrix.php == '8.4' && matrix.laravel == '12.*'
+              if: matrix.php == '8.5' && matrix.laravel == '12.*'
               uses: codecov/codecov-action@v5
 
             - name: Upload test results to Codecov
-              if: matrix.php == '8.4' && matrix.laravel == '12.*'
+              if: matrix.php == '8.5' && matrix.laravel == '12.*'
               uses: codecov/test-results-action@v1
