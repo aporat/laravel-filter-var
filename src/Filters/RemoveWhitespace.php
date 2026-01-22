@@ -24,10 +24,12 @@ final readonly class RemoveWhitespace implements Filter
             return $value;
         }
 
-        return preg_replace(
+        $result = preg_replace(
             pattern: '/\s+/',
             replacement: '',
             subject: $value
         );
+
+        return $result ?? $value;
     }
 }

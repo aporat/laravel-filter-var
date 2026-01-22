@@ -41,14 +41,14 @@ Optionally, register the facade for cleaner syntax:
 ```php
 'aliases' => [
     // ...
-    'FilterVar' => Aporat\FilterVar\Laravel\Facades\FilterVar::class,
+    'FilterVar' => Aporat\FilterVar\Facades\FilterVar::class,
 ],
 ```
 
 Publish the configuration file to customize filters:
 
 ```bash
-php artisan vendor:publish --provider="Aporat\FilterVar\Laravel\FilterVarServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Aporat\FilterVar\FilterVarServiceProvider" --tag="config"
 ```
 
 This copies `config/filter-var.php` to your Laravel config directory.
@@ -59,7 +59,7 @@ This copies `config/filter-var.php` to your Laravel config directory.
 Filter and sanitize a request variable using the facade:
 
 ```php
-use Aporat\FilterVar\Laravel\Facades\FilterVar;
+use Aporat\FilterVar\Facades\FilterVar;
 
 $userAgent = FilterVar::filterValue('cast:string|trim|strip_tags|escape', $request->header('User-Agent'));
 ```
@@ -75,23 +75,18 @@ This:
 | Filter                 | Description                                        | Example Input             | Example Output         |
 |------------------------|----------------------------------------------------|---------------------------|------------------------|
 | `capitalize`           | Capitalizes words (title case)                    | `hello world`             | `Hello World`          |
-| `cast:<type>`          | Casts to a type (e.g., `int`, `string`, `bool`)   | `123.45` (cast:int)       | `123`                  |
+| `cast:<type>`          | Casts to a type (e.g., `int`, `string`, `bool`, `array`, `object`, `collection`)   | `123.45` (cast:int)       | `123`                  |
 | `digit`                | Extracts digits only                              | `abc123xyz`               | `123`                  |
 | `escape`               | Escapes HTML special characters                   | `<p>Hello &</p>`          | `&lt;p&gt;Hello &amp;&lt;/p&gt;` |
 | `filter_if`            | Conditional check on array key/value              | `['key' => 'val']`        | `true`/`false`         |
 | `format_date`          | Reformats a date string                           | `2023-01-15`              | `15/01/2023`           |
 | `lowercase`            | Converts to lowercase                             | `HELLO`                   | `hello`                |
+| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
+| `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
+| `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
 | `strip_tags`           | Removes HTML/PHP tags                             | `<b>Hello</b>`            | `Hello`                |
 | `trim`                 | Trims whitespace                                  | `  hello  `               | `hello`                |
 | `uppercase`            | Converts to uppercase                             | `hello`                   | `HELLO`                |
-| `validate_email`       | Validates email format                            | `test@example.com`        | `test@example.com`     |
-| `validate_url`         | Validates URL format                              | `https://example.com`     | `https://example.com`  |
-| `cast_to_boolean`      | Casts input to boolean                            | `true`, `false`           | `true`, `false`        |
-| `sanitize_number_int`  | Keeps only digits                                 | `abc123`                  | `123`                  |
-| `sanitize_number_float`| Keeps digits and decimals                         | `abc12.3xyz`              | `12.3`                 |
-| `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
-| `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
-| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
 
 ### Chaining Filters
 Chain multiple filters using the `|` separator:
@@ -151,10 +146,10 @@ Run the test suite:
 composer test
 ```
 
-Generate coverage reports:
+Generate coverage reports for CI:
 
 ```bash
-composer test-coverage
+composer test-ci
 ```
 
 ## Contributing

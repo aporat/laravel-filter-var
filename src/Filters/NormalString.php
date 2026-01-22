@@ -28,10 +28,12 @@ final readonly class NormalString implements Filter
         $value = strip_tags((string) $value);
 
         // Next, remove all characters that are not letters, numbers, or basic symbols.
-        return (string) preg_replace(
+        $result = preg_replace(
             pattern: '/[^\p{L}\p{N} \-:_.]/u',
             replacement: '',
             subject: $value
         );
+
+        return $result ?? '';
     }
 }
