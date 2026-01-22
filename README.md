@@ -75,23 +75,18 @@ This:
 | Filter                 | Description                                        | Example Input             | Example Output         |
 |------------------------|----------------------------------------------------|---------------------------|------------------------|
 | `capitalize`           | Capitalizes words (title case)                    | `hello world`             | `Hello World`          |
-| `cast:<type>`          | Casts to a type (e.g., `int`, `string`, `bool`)   | `123.45` (cast:int)       | `123`                  |
+| `cast:<type>`          | Casts to a type (e.g., `int`, `string`, `bool`, `array`, `object`, `collection`)   | `123.45` (cast:int)       | `123`                  |
 | `digit`                | Extracts digits only                              | `abc123xyz`               | `123`                  |
 | `escape`               | Escapes HTML special characters                   | `<p>Hello &</p>`          | `&lt;p&gt;Hello &amp;&lt;/p&gt;` |
 | `filter_if`            | Conditional check on array key/value              | `['key' => 'val']`        | `true`/`false`         |
 | `format_date`          | Reformats a date string                           | `2023-01-15`              | `15/01/2023`           |
 | `lowercase`            | Converts to lowercase                             | `HELLO`                   | `hello`                |
+| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
+| `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
+| `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
 | `strip_tags`           | Removes HTML/PHP tags                             | `<b>Hello</b>`            | `Hello`                |
 | `trim`                 | Trims whitespace                                  | `  hello  `               | `hello`                |
 | `uppercase`            | Converts to uppercase                             | `hello`                   | `HELLO`                |
-| `validate_email`       | Validates email format                            | `test@example.com`        | `test@example.com`     |
-| `validate_url`         | Validates URL format                              | `https://example.com`     | `https://example.com`  |
-| `cast_to_boolean`      | Casts input to boolean                            | `true`, `false`           | `true`, `false`        |
-| `sanitize_number_int`  | Keeps only digits                                 | `abc123`                  | `123`                  |
-| `sanitize_number_float`| Keeps digits and decimals                         | `abc12.3xyz`              | `12.3`                 |
-| `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
-| `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
-| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
 
 ### Chaining Filters
 Chain multiple filters using the `|` separator:
@@ -151,10 +146,10 @@ Run the test suite:
 composer test
 ```
 
-Generate coverage reports:
+Generate coverage reports for CI:
 
 ```bash
-composer test-coverage
+composer test-ci
 ```
 
 ## Contributing

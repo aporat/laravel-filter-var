@@ -29,9 +29,9 @@ jobs:
               uses: actions/cache@v5
               with:
                   path: vendor
-                  key: ubuntu-php-8.5-lint-${{ hashFiles('**/composer.lock') }}
+                  key: ubuntu-php-8.4-lint-${{ hashFiles('**/composer.lock') }}
                   restore-keys: |
-                      ubuntu-php-8.5-lint-
+                      ubuntu-php-8.4-lint-
 
             - name: Install Dependencies
               uses: ramsey/composer-install@v3
