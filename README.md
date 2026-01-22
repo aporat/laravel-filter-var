@@ -41,14 +41,14 @@ Optionally, register the facade for cleaner syntax:
 ```php
 'aliases' => [
     // ...
-    'FilterVar' => Aporat\FilterVar\Laravel\Facades\FilterVar::class,
+    'FilterVar' => Aporat\FilterVar\Facades\FilterVar::class,
 ],
 ```
 
 Publish the configuration file to customize filters:
 
 ```bash
-php artisan vendor:publish --provider="Aporat\FilterVar\Laravel\FilterVarServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Aporat\FilterVar\FilterVarServiceProvider" --tag="config"
 ```
 
 This copies `config/filter-var.php` to your Laravel config directory.
@@ -59,7 +59,7 @@ This copies `config/filter-var.php` to your Laravel config directory.
 Filter and sanitize a request variable using the facade:
 
 ```php
-use Aporat\FilterVar\Laravel\Facades\FilterVar;
+use Aporat\FilterVar\Facades\FilterVar;
 
 $userAgent = FilterVar::filterValue('cast:string|trim|strip_tags|escape', $request->header('User-Agent'));
 ```

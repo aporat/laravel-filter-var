@@ -2,12 +2,12 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/thephpleague/oauth2-github).
+We accept contributions via Pull Requests on [Github](https://github.com/aporat/laravel-filter-var).
 
 
 ## Pull Requests
 
-- **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - The easiest way to apply the conventions is to install [Laravel Pint](https://github.com/laravel/pint).
+- **[PSR-12 Coding Standard](https://www.php-fig.org/psr/psr-12/)** - The easiest way to apply the conventions is to install [Laravel Pint](https://github.com/laravel/pint).
 
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 
@@ -23,7 +23,7 @@ We accept contributions via Pull Requests on [Github](https://github.com/thephpl
 
 - **Ensure tests pass!** - Please run the tests (see below) before submitting your pull request, and make sure they pass. We won't accept a patch until all tests pass.
 
-- **Ensure no coding standards violations** - Please run PHP Code Sniffer using the PSR-2 standard (see below) before submitting your pull request. A violation will cause the build to fail, so please make sure there are no violations. We can't accept a patch if the build fails.
+- **Ensure no coding standards violations** - Please run Laravel Pint (see below) before submitting your pull request. A violation will cause the build to fail, so please make sure there are no violations. We can't accept a patch if the build fails.
 
 
 ## Running Tests
@@ -33,10 +33,24 @@ $ composer test
 ```
 
 
-## Running PHP Code Sniffer
+## Running Code Linter
 
 ``` bash
-$ composer check
+$ composer lint
+```
+
+
+## Running Static Analysis
+
+``` bash
+$ composer analyse
+```
+
+
+## Running All Quality Checks
+
+``` bash
+$ composer qa
 ```
 
 **Happy coding**!
