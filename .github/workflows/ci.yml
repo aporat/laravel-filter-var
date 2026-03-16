@@ -34,7 +34,7 @@ jobs:
                       ubuntu-php-8.4-lint-
 
             - name: Install Dependencies
-              uses: ramsey/composer-install@v3
+              uses: ramsey/composer-install@v4
 
             - name: Execute linter (Pint)
               run: composer lint
@@ -73,7 +73,7 @@ jobs:
                       ubuntu-${{ matrix.php }}-${{ matrix.laravel }}-
 
             - name: Install Dependencies
-              uses: ramsey/composer-install@v3
+              uses: ramsey/composer-install@v4
 
             - name: Execute tests (PHPUnit)
               run: composer test-ci
