@@ -126,6 +126,34 @@ final class FilterTest extends TestCase
     }
 
     #[Test]
+    #[DataProvider('castBoolProvider')]
+    public function cast_bool_understands_boolean_strings(mixed $input, bool $expected): void
+    {
+        self::assertSame($expected, (new Cast)->apply($input, ['bool']));
+        self::assertSame($expected, (new Cast)->apply($input, ['boolean']));
+    }
+
+    public static function castBoolProvider(): iterable
+    {
+        yield "'false'" => ['false', false];
+        yield "'FALSE'" => ['FALSE', false];
+        yield "'0'" => ['0', false];
+        yield "'no'" => ['no', false];
+        yield "'off'" => ['off', false];
+        yield "''" => ['', false];
+        yield "'true'" => ['true', true];
+        yield "'1'" => ['1', true];
+        yield "'yes'" => ['yes', true];
+        yield "'on'" => ['on', true];
+        yield 'unrecognized string' => ['abc', true];
+        yield 'int 0' => [0, false];
+        yield 'int 2' => [2, true];
+        yield 'null' => [null, false];
+        yield 'empty array' => [[], false];
+        yield 'non-empty array' => [[0], true];
+    }
+
+    #[Test]
     public function cast_can_convert_to_collection(): void
     {
         $filter = new Cast;

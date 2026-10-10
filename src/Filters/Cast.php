@@ -35,12 +35,28 @@ final readonly class Cast implements Filter
             'int', 'integer' => (int) $value,
             'real', 'float', 'double' => (float) $value,
             'string' => (string) $value,
-            'bool', 'boolean' => (bool) $value,
+            'bool', 'boolean' => $this->toBool($value),
             'array' => $this->toArray($value),
             'object' => $this->toObject($value),
             'collection' => new Collection($this->toArray($value)),
             default => throw new InvalidArgumentException("Invalid casting type provided: '$type'."),
         };
+    }
+
+    /**
+     * Convert a mixed value to a boolean.
+     *
+     * Strings such as 'false', '0', 'no', 'off' and '' become false, and 'true', '1',
+     * 'yes', 'on' become true (case-insensitive). Unrecognized strings and non-string
+     * values fall back to a native (bool) cast.
+     */
+    private function toBool(mixed $value): bool
+    {
+        if (is_string($value)) {
+            return filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? (bool) $value;
+        }
+
+        return (bool) $value;
     }
 
     /**

@@ -88,6 +88,8 @@ This:
 | `trim`                 | Trims whitespace                                  | `  hello  `               | `hello`                |
 | `uppercase`            | Converts to uppercase                             | `hello`                   | `HELLO`                |
 
+`cast:bool` (or `cast:boolean`) understands boolean strings: `'true'`, `'1'`, `'yes'`, `'on'` become `true` and `'false'`, `'0'`, `'no'`, `'off'`, `''` become `false` (case-insensitive). Any other value uses PHP's native `(bool)` cast.
+
 ### Chaining Filters
 Chain multiple filters using the `|` separator:
 
