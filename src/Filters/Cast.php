@@ -55,7 +55,10 @@ final readonly class Cast implements Filter
         }
 
         if (is_string($value)) {
-            return json_decode(json: $value, associative: true) ?? [];
+            $decoded = json_decode(json: $value, associative: true);
+
+            // JSON scalars (e.g. '123', 'true') and invalid JSON yield an empty array.
+            return is_array($decoded) ? $decoded : [];
         }
 
         // Handles objects and other types
@@ -72,7 +75,14 @@ final readonly class Cast implements Filter
         }
 
         if (is_string($value)) {
-            return json_decode(json: $value, associative: false) ?? new stdClass;
+            $decoded = json_decode(json: $value, associative: false);
+
+            if (is_object($decoded)) {
+                return $decoded;
+            }
+
+            // JSON lists (e.g. '[1,2]') are converted like arrays; scalars and invalid JSON yield an empty object.
+            return is_array($decoded) ? (object) $decoded : new stdClass;
         }
 
         // Handles arrays and other types
