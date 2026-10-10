@@ -16,7 +16,9 @@ final readonly class FilterIf implements Filter
      * Checks if the condition is met.
      *
      * Returns true only if the input is an array and the specified key's
-     * value strictly matches the expected value.
+     * value matches the expected value. Options parsed from a rule string are
+     * always strings, so scalar values are compared by their string form
+     * (e.g. int 1 matches '1'); other values are compared strictly.
      *
      * @param  mixed  $value  The input value, expected to be an array.
      * @param  array<int, mixed>  $options  [$key, $expectedValue]
@@ -36,6 +38,16 @@ final readonly class FilterIf implements Filter
             return false;
         }
 
-        return array_key_exists(key: $key, array: $value) && $value[$key] === $expectedValue;
+        if (! array_key_exists(key: $key, array: $value)) {
+            return false;
+        }
+
+        $actualValue = $value[$key];
+
+        if (is_scalar($actualValue) && is_scalar($expectedValue)) {
+            return (string) $actualValue === (string) $expectedValue;
+        }
+
+        return $actualValue === $expectedValue;
     }
 }

@@ -35,12 +35,28 @@ final readonly class Cast implements Filter
             'int', 'integer' => (int) $value,
             'real', 'float', 'double' => (float) $value,
             'string' => (string) $value,
-            'bool', 'boolean' => (bool) $value,
+            'bool', 'boolean' => $this->toBool($value),
             'array' => $this->toArray($value),
             'object' => $this->toObject($value),
             'collection' => new Collection($this->toArray($value)),
             default => throw new InvalidArgumentException("Invalid casting type provided: '$type'."),
         };
+    }
+
+    /**
+     * Convert a mixed value to a boolean.
+     *
+     * Strings such as 'false', '0', 'no', 'off' and '' become false, and 'true', '1',
+     * 'yes', 'on' become true (case-insensitive). Unrecognized strings and non-string
+     * values fall back to a native (bool) cast.
+     */
+    private function toBool(mixed $value): bool
+    {
+        if (is_string($value)) {
+            return filter_var($value, FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? (bool) $value;
+        }
+
+        return (bool) $value;
     }
 
     /**
@@ -55,7 +71,10 @@ final readonly class Cast implements Filter
         }
 
         if (is_string($value)) {
-            return json_decode(json: $value, associative: true) ?? [];
+            $decoded = json_decode(json: $value, associative: true);
+
+            // JSON scalars (e.g. '123', 'true') and invalid JSON yield an empty array.
+            return is_array($decoded) ? $decoded : [];
         }
 
         // Handles objects and other types
@@ -72,7 +91,14 @@ final readonly class Cast implements Filter
         }
 
         if (is_string($value)) {
-            return json_decode(json: $value, associative: false) ?? new stdClass;
+            $decoded = json_decode(json: $value, associative: false);
+
+            if (is_object($decoded)) {
+                return $decoded;
+            }
+
+            // JSON lists (e.g. '[1,2]') are converted like arrays; scalars and invalid JSON yield an empty object.
+            return is_array($decoded) ? (object) $decoded : new stdClass;
         }
 
         // Handles arrays and other types

@@ -5,7 +5,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/aporat/laravel-filter-var?style=flat-square)](https://codecov.io/github/aporat/laravel-filter-var)
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x%20|%2013.x-orange.svg?style=flat-square)](https://laravel.com/docs/13.x)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/aporat/laravel-filter-var/ci.yml?style=flat-square)
-[![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/main/LICENSE)
 
 A Laravel package for filtering and sanitizing request variables with a chainable, customizable filter system.
 
@@ -81,12 +81,14 @@ This:
 | `filter_if`            | Conditional check on array key/value              | `['key' => 'val']`        | `true`/`false`         |
 | `format_date`          | Reformats a date string                           | `2023-01-15`              | `15/01/2023`           |
 | `lowercase`            | Converts to lowercase                             | `HELLO`                   | `hello`                |
-| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
+| `normal_string`        | Strips tags and keeps only Unicode letters and numbers (`\p{L}`, `\p{N}`), space, `-:_.` | `<b>Héllo</b> wörld! 123` | `Héllo wörld 123` |
 | `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
 | `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
 | `strip_tags`           | Removes HTML/PHP tags                             | `<b>Hello</b>`            | `Hello`                |
 | `trim`                 | Trims whitespace                                  | `  hello  `               | `hello`                |
 | `uppercase`            | Converts to uppercase                             | `hello`                   | `HELLO`                |
+
+`cast:bool` (or `cast:boolean`) understands boolean strings: `'true'`, `'1'`, `'yes'`, `'on'` become `true` and `'false'`, `'0'`, `'no'`, `'off'`, `''` become `false` (case-insensitive). Any other value uses PHP's native `(bool)` cast.
 
 ### Chaining Filters
 Chain multiple filters using the `|` separator:

@@ -3,9 +3,13 @@
 namespace Aporat\FilterVar\Tests;
 
 use Aporat\FilterVar\Contracts\Filter;
+use Aporat\FilterVar\Filters\Uppercase;
 use Aporat\FilterVar\FilterVar;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * Custom filter to extract the real ID from a media identifier.
@@ -84,5 +88,86 @@ final class CustomFilterTest extends TestCase
     {
         $result = $this->filterVar->filterValue('MediaRealId', null);
         self::assertSame('', $result);
+    }
+
+    #[Test]
+    #[DataProvider('filterNameVariantsProvider')]
+    public function snake_case_config_key_resolves_with_any_rule_spelling(string $rule): void
+    {
+        $config = require __DIR__.'/../config/filter-var.php';
+        $config['custom_filters'] = [
+            'media_real_id' => MediaRealId::class,
+        ];
+
+        $filterVar = new FilterVar($config);
+
+        self::assertSame('11111', $filterVar->filterValue($rule, '11111_22222'));
+    }
+
+    public static function filterNameVariantsProvider(): iterable
+    {
+        yield ['media_real_id'];
+        yield ['MediaRealId'];
+        yield ['mediaRealId'];
+        yield ['media_real_id|cast:string'];
+    }
+
+    #[Test]
+    public function extend_registers_snake_case_filter_at_runtime(): void
+    {
+        $filterVar = new FilterVar;
+        $filterVar->extend('media_real_id', MediaRealId::class);
+
+        self::assertSame('11111', $filterVar->filterValue('media_real_id', '11111_22222'));
+    }
+
+    #[Test]
+    public function extend_replaces_previously_resolved_filter(): void
+    {
+        $filterVar = new FilterVar;
+        $filterVar->extend('media_real_id', MediaRealId::class);
+        self::assertSame('ab', $filterVar->filterValue('media_real_id', 'ab_cd'));
+
+        $filterVar->extend('MediaRealId', Uppercase::class);
+        self::assertSame('AB_CD', $filterVar->filterValue('media_real_id', 'ab_cd'));
+    }
+
+    #[Test]
+    public function extend_throws_when_class_does_not_implement_filter_contract(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        (new FilterVar)->extend('not_a_filter', stdClass::class);
+    }
+
+    #[Test]
+    public function constructor_throws_when_configured_class_does_not_implement_filter_contract(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        new FilterVar(['custom_filters' => ['not_a_filter' => stdClass::class]]);
+    }
+
+    #[Test]
+    public function empty_rule_segments_are_skipped(): void
+    {
+        self::assertSame('  hello  ', $this->filterVar->filterValue('', '  hello  '));
+        self::assertSame('HELLO', $this->filterVar->filterValue('trim|uppercase|', '  hello  '));
+        self::assertSame('HELLO', $this->filterVar->filterValue('trim||uppercase', '  hello  '));
+    }
+
+    #[Test]
+    public function unknown_filter_still_throws(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->filterVar->filterValue('trim|does_not_exist', 'hello');
+    }
+
+    #[Test]
+    public function filter_if_rule_options_match_integer_values(): void
+    {
+        self::assertTrue($this->filterVar->filterValue('filter_if:status,1', ['status' => 1]));
+        self::assertFalse($this->filterVar->filterValue('filter_if:status,1', ['status' => 2]));
     }
 }

@@ -25,7 +25,7 @@ final readonly class FormatDate implements Filter
      */
     public function apply(mixed $value, array $options = []): mixed
     {
-        if (empty($value)) {
+        if (empty($value) || ! is_scalar($value)) {
             return $value;
         }
 
@@ -41,13 +41,24 @@ final readonly class FormatDate implements Filter
                 time: (string) $value
             );
 
-            if ($date === null) {
+            if ($date === null || self::hasParseWarnings()) {
                 return $value;
             }
 
-            return $date->format($targetFormat);
+            return $date->format(trim($targetFormat));
         } catch (InvalidFormatException) {
             return $value;
         }
+    }
+
+    /**
+     * Whether the last parse produced warnings, e.g. an impossible date such as
+     * 2023-02-30 that would otherwise silently roll over to the next month.
+     */
+    private static function hasParseWarnings(): bool
+    {
+        $errors = Carbon::getLastErrors();
+
+        return is_array($errors) && $errors['warning_count'] > 0;
     }
 }
