@@ -5,7 +5,7 @@
 [![Codecov](https://img.shields.io/codecov/c/github/aporat/laravel-filter-var?style=flat-square)](https://codecov.io/github/aporat/laravel-filter-var)
 [![Laravel Version](https://img.shields.io/badge/Laravel-12.x%20|%2013.x-orange.svg?style=flat-square)](https://laravel.com/docs/13.x)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/aporat/laravel-filter-var/ci.yml?style=flat-square)
-[![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/master/LICENSE)
+[![License](https://img.shields.io/packagist/l/aporat/laravel-filter-var.svg?style=flat-square)](https://github.com/aporat/laravel-filter-var/blob/main/LICENSE)
 
 A Laravel package for filtering and sanitizing request variables with a chainable, customizable filter system.
 
