@@ -81,7 +81,7 @@ This:
 | `filter_if`            | Conditional check on array key/value              | `['key' => 'val']`        | `true`/`false`         |
 | `format_date`          | Reformats a date string                           | `2023-01-15`              | `15/01/2023`           |
 | `lowercase`            | Converts to lowercase                             | `HELLO`                   | `hello`                |
-| `normal_string`        | Strips tags and keeps `A-Z`, `0-9`, space, `-:_.` | `<script>alert(1)</script>` | `alert1`            |
+| `normal_string`        | Strips tags and keeps only Unicode letters and numbers (`\p{L}`, `\p{N}`), space, `-:_.` | `<b>Héllo</b> wörld! 123` | `Héllo wörld 123` |
 | `remove_whitespace`    | Removes all whitespace                            | ` a b  c `                | `abc`                  |
 | `slugify`              | Converts string into URL-friendly slug            | ` Hello World! `          | `hello-world`          |
 | `strip_tags`           | Removes HTML/PHP tags                             | `<b>Hello</b>`            | `Hello`                |

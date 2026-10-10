@@ -59,6 +59,8 @@ final class FilterTest extends TestCase
         yield [NormalString::class, '<b>Hello</b>!@#123', 'Hello123'];
         yield [NormalString::class, 'Test <script>alert(1)</script> 2024-04-12 14:30:00', 'Test alert1 2024-04-12 14:30:00'];
         yield [NormalString::class, 'ABC def 123 -:_.', 'ABC def 123 -:_.'];
+        yield [NormalString::class, '<b>Héllo</b> wörld! 123', 'Héllo wörld 123'];
+        yield [NormalString::class, 'Привет, 日本語 ١٢٣ @#$', 'Привет 日本語 ١٢٣ '];
 
         // RemoveWhitespace
         yield [RemoveWhitespace::class, ' a b  c 1 2 3 ', 'abc123'];
